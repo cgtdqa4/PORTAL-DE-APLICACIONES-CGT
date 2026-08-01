@@ -1,0 +1,14 @@
+{
+  "name": "portal-de-aplicaciones-cgt",
+  "version": "1.0.0",
+  "description": "Portal de Aplicaciones - CGT DQA4",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static HTML - No build required'",
+    "lint": "echo 'No linter configured'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  }
+}
