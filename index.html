@@ -316,9 +316,9 @@
             <div id="error-message" class="error-msg">Contraseña incorrecta. Consulta con tu delegado o representación sindical.</div>
         </div>
 
-        <!-- SECCIÓN 2: APPS AFILIADOS -->
+       <!-- SECCIÓN 2: APPS AFILIADOS -->
         <section id="afiliados-section" class="section-block section-vercel">
-            <h2 class="section-title">Herramientas Exclusivas Afiliados (Vercel)</h2>
+            <h2 class="section-title">Herramientas Exclusivas Afiliados</h2>
             <div class="apps-grid">
                 <a href="https://verificador-de-nominas.vercel.app" target="_blank" class="app-card">
                     <div>
@@ -327,21 +327,24 @@
                     </div>
                     <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
                 </a>
-                <a href="https://calculora-finiquito-e-indemnizaci.vercel.app" target="_blank" class="app-card">
+                <!-- ENLACE CORREGIDO 1 -->
+                <a href="https://cgtdqa4.github.io/CALCULADORA-FINIQUITO-E-INDEMNIZACIONES-CGT/" target="_blank" class="app-card">
                     <div>
                         <h3>Calculadora Finiquito e Indemnización →</h3>
                         <p>Cálculo exacto de liquidación, finiquito e indemnizaciones por extinción de contrato.</p>
                     </div>
                     <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
                 </a>
-                <a href="https://calculo-salario-diario.vercel.app" target="_blank" class="app-card">
+                <!-- ENLACE CORREGIDO 2 -->
+                <a href="https://cgtdqa4.github.io/CALCULADORA-SALARIO-DIARIO/" target="_blank" class="app-card">
                     <div>
                         <h3>Cálculo Salario Diario →</h3>
                         <p>Determinación de la base reguladora y salario regulador diario para distintos cálculos.</p>
                     </div>
                     <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
                 </a>
-                <a href="https://calculo-atrasos-reyf.vercel.app" target="_blank" class="app-card">
+                <!-- ENLACE CORREGIDO 3 -->
+                <a href="https://cgtdqa4.github.io/CALCULADORA-ATRASOS/" target="_blank" class="app-card">
                     <div>
                         <h3>Cálculo Atrasos REYF →</h3>
                         <p>Simulación y cálculo de atrasos salariales y regularizaciones del convenio.</p>
@@ -364,57 +367,3 @@
                 </a>
             </div>
         </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 <strong>CGT - Sección Sindical</strong>. Todas las herramientas reservadas para el uso correspondiente.</p>
-    </footer>
-
-    <script>
-        const ACCESS_KEY = "sndctmdrn2026";
-
-        const loginForm = document.getElementById('login-form');
-        const passwordInput = document.getElementById('password');
-        const errorMessage = document.getElementById('error-message');
-        const loginBox = document.getElementById('login-box');
-        const afiliadosSection = document.getElementById('afiliados-section');
-        const logoutBtn = document.getElementById('logout-btn');
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('cgt_auth') === 'true') {
-                unlockAfiliados();
-            }
-        });
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (passwordInput.value.trim() === ACCESS_KEY) {
-                sessionStorage.setItem('cgt_auth', 'true');
-                errorMessage.style.display = 'none';
-                unlockAfiliados();
-            } else {
-                errorMessage.style.display = 'block';
-                passwordInput.value = '';
-            }
-        });
-
-        logoutBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('cgt_auth');
-            lockAfiliados();
-        });
-
-        function unlockAfiliados() {
-            loginBox.style.display = 'none';
-            afiliadosSection.style.display = 'block';
-            logoutBtn.style.display = 'block';
-        }
-
-        function lockAfiliados() {
-            loginBox.style.display = 'block';
-            afiliadosSection.style.display = 'none';
-            logoutBtn.style.display = 'none';
-            passwordInput.value = '';
-        }
-    </script>
-</body>
-</html>
