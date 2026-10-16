@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return res.status(200).json({ reply: 'Error: Falta configurar GEMINI_API_KEY en los ajustes de Vercel.' });
+    return res.status(200).json({ reply: 'Error: Falta configurar la variable GEMINI_API_KEY en Vercel.' });
   }
 
   try {
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    const systemPrompt = "Eres el Asistente de Asesoría Laboral de la Sección Sindical de CGT en Amazon DQA4. Responde de forma clara, concisa y profesional a la consulta del trabajador basándote en el Estatuto de los Trabajadores. Si requiere estudio de nómina o documentos, remítelos a cgt.dqa4@gmail.com.";
+    const systemPrompt = "Eres el Asistente de Asesoría Laboral de la Sección Sindical de CGT en Amazon DQA4. Responde de forma clara, concisa y profesional a las consultas laborales de los trabajadores basándote en el Estatuto de los Trabajadores. Si requiere estudio de nómina o documentos, remítelos a cgt.dqa4@gmail.com.";
 
     let replyText = "";
 
@@ -31,10 +31,12 @@ export default async function handler(req, res) {
       const response = await result.response;
       replyText = response.text();
     } catch (e) {
-      console.warn("Fallo gemini-1.5-flash, probando modelo alternativo...", e.message);
-      // Fallback a gemini-1.5-pro si el anterior falla
-      const fallbackModel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-      const result = await fallbackModel.generateContent(`${systemPrompt}\n\nPregunta: ${lastUserMessage}`);
+      console.warn("Fallo con gemini-1.5-flash, probando con gemini-2.5-flash...", e.message);
+      const fallbackModel = genAI.getGenerativeModel({ 
+        model: "gemini-2.5-flash",
+        systemInstruction: systemPrompt 
+      });
+      const result = await fallbackModel.generateContent(lastUserMessage);
       const response = await result.response;
       replyText = response.text();
     }
@@ -48,7 +50,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Error al conectar con Gemini SDK:", error);
     return res.status(200).json({ 
-      reply: `Error en la API de Google: ${error.message || 'Comprueba que tu API Key esté activa en Google AI Studio.'}` 
+      reply: `Error en la API de Google: ${error.message || 'Comprueba que tu API Key sea de un proyecto nuevo en Google AI Studio.'}` 
     });
   }
 }
