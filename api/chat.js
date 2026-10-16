@@ -6,15 +6,14 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return res.status(200).json({ reply: 'Error: Falta configurar la variable GEMINI_API_KEY en Vercel.' });
+    return res.status(200).json({ reply: 'Error: Falta configurar GEMINI_API_KEY en Vercel.' });
   }
 
   try {
     const { messages } = req.body;
-    const lastMessage = messages[messages.length - 1].content;
+    const lastUserMessage = messages[messages.length - 1].content;
 
-    // Usamos el endpoint directo con la clave en la URL
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -22,11 +21,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         contents: [
           {
-            role: 'user',
             parts: [
-              { 
-                text: `Eres el Asistente de Asesoría Laboral de la Sección Sindical de CGT en Amazon DQA4. Responde de forma clara, concisa y profesional a la siguiente duda laboral basándote en el Estatuto de los Trabajadores: ${lastMessage}` 
-              }
+              { text: `Eres el Asistente de Asesoría Laboral de la Sección Sindical de CGT en Amazon DQA4. Responde de forma clara y profesional a esta consulta laboral basándote en el Estatuto de los Trabajadores: ${lastUserMessage}` }
             ]
           }
         ]
@@ -39,13 +35,13 @@ export default async function handler(req, res) {
       const reply = data.candidates[0].content.parts[0].text;
       return res.status(200).json({ reply });
     } else {
-      console.error("Respuesta inesperada de Google:", JSON.stringify(data));
+      console.error("Error de la API de Google:", JSON.stringify(data));
       return res.status(200).json({ 
-        reply: 'La IA no pudo procesar la respuesta. Comprueba que tu API Key sea correcta y tenga cuota activa en Google AI Studio.' 
+        reply: 'Error de la IA: Comprueba que tu API Key de Google AI Studio sea válida y tenga cuota activa.' 
       });
     }
   } catch (error) {
-    console.error("Error en Serverless Function:", error);
-    return res.status(200).json({ reply: 'Error interno al conectar con el servicio de IA.' });
+    console.error("Error en servidor:", error);
+    return res.status(200).json({ reply: 'Error de conexión con el servidor.' });
   }
 }
