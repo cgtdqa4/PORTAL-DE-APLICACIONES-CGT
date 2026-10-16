@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Aplicaciones - CGT </title>
+    <title>Portal de Aplicaciones - CGT</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -258,6 +258,120 @@
             width: 100%;
             max-width: 1000px;
         }
+
+        /* Estilos del Chatbot (Azul y Blanco) */
+        #cgt-chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        #cgt-chat-button {
+            background-color: #004499;
+            color: #ffffff;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 22px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        #cgt-chat-button:hover {
+            background-color: #002d66;
+        }
+        #cgt-chat-box {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 360px;
+            max-width: 90vw;
+            height: 500px;
+            max-height: 80vh;
+            background-color: #ffffff;
+            border: 1px solid #cce0ff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .cgt-chat-header {
+            background-color: #004499;
+            color: #ffffff;
+            padding: 14px 16px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cgt-chat-header button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .cgt-chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f4f8fc;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .cgt-msg {
+            max-width: 82%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .cgt-msg-user {
+            align-self: flex-end;
+            background-color: #004499;
+            color: #ffffff;
+            border-bottom-right-radius: 2px;
+        }
+        .cgt-msg-bot {
+            align-self: flex-start;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            border: 1px solid #d0e1f9;
+            border-bottom-left-radius: 2px;
+        }
+        .cgt-chat-footer {
+            display: flex;
+            padding: 10px;
+            background-color: #ffffff;
+            border-top: 1px solid #e6f0ff;
+        }
+        .cgt-chat-footer input {
+            flex: 1;
+            border: 1px solid #b3d1ff;
+            border-radius: 20px;
+            padding: 10px 14px;
+            outline: none;
+            font-size: 14px;
+        }
+        .cgt-chat-footer button {
+            background-color: #004499;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -278,56 +392,48 @@
         <section class="section-block section-github">
             <h2 class="section-title">Herramientas Libres (Acceso Público)</h2>
             <div class="apps-grid">
-                <!-- 1. Buscador Convenio Colectivo -->
                 <a href="https://cgtdqa4.github.io/BUSCADOR-CONVENIO-COLECTIVO/" target="_blank" class="app-card">
                     <div>
                         <h3>Buscador Convenio Colectivo →</h3>
                         <p>Buscador de artículos y condiciones reguladas en el convenio colectivo.</p>
                     </div>
                 </a>
-                <!-- 2. Buscador Estatuto Trabajadores -->
                 <a href="https://cgtdqa4.github.io/BUSCADOR-ESTATUTO-TRABAJADORES/" target="_blank" class="app-card">
                     <div>
                         <h3>Buscador Estatuto Trabajadores →</h3>
                         <p>Búsqueda directa y consulta de artículos del Estatuto de los Trabajadores.</p>
                     </div>
                 </a>
-                <!-- 3. Simulador IRPF CGT -->
                 <a href="https://cgtdqa4.github.io/SIMULADOR-IRPF-CGT/" target="_blank" class="app-card">
                     <div>
                         <h3>Simulador IRPF CGT →</h3>
                         <p>Estimación del tipo de retención y ajuste de IRPF sobre los rendimientos del trabajo.</p>
                     </div>
                 </a>
-                <!-- 4. Guía de Permisos -->
                 <a href="https://cgtdqa4.github.io/GUIA-DE-PERMISOS/" target="_blank" class="app-card">
                     <div>
                         <h3>Guía de Permisos →</h3>
                         <p>Consulta rápida y detallada de permisos laborales, licencias y retribuciones.</p>
                     </div>
                 </a>
-                <!-- 5. Gestor de Flexis -->
                 <a href="https://cgtdqa4.github.io/GESTOR-DE-FLEXIS/" target="_blank" class="app-card">
                     <div>
                         <h3>Gestor de Flexis →</h3>
                         <p>Herramienta para el control, cálculo y seguimiento del saldo de horas flexibles.</p>
                     </div>
                 </a>
-                <!-- 6. Simulador Prestación Fijo Discontinuo -->
                 <a href="https://cgtdqa4.github.io/SIMULADOR-PRESTACION-FIJO-DISCONTINUO/" target="_blank" class="app-card">
                     <div>
                         <h3>Simulador Prestación Fijo Discontinuo →</h3>
                         <p>Cálculo de prestación y desempleo adaptado a períodos de inactividad de fijos discontinuos.</p>
                     </div>
                 </a>
-                <!-- 7. Simulador Prestación Maternidad, Paternidad y Riesgo -->
                 <a href="https://cgtdqa4.github.io/SIMULADOR--PRESTACION-MATERNIDAD-PATERNIDAD-RIESGO/" target="_blank" class="app-card">
                     <div>
                         <h3>Simulador Prestación Maternidad, Paternidad y Riesgo →</h3>
                         <p>Cálculo estimado de la prestación por nacimiento, cuidado del menor o riesgo durante el embarazo.</p>
                     </div>
                 </a>
-                <!-- 8. Cálculo Atrasos REYF (Movida a Libres) -->
                 <a href="https://cgtdqa4.github.io/CALCULADORA-ATRASOS/" target="_blank" class="app-card">
                     <div>
                         <h3>Cálculo Atrasos REYF →</h3>
@@ -395,6 +501,27 @@
         <p>&copy; 2026 <strong>CGT - Sección Sindical</strong>. Todas las herramientas reservadas para el uso correspondiente.</p>
     </footer>
 
+    <!-- Widget del Chatbot (Estructura HTML) -->
+    <div id="cgt-chat-widget">
+        <button id="cgt-chat-button" onclick="toggleCgtChat()">💬 Chat Asesoría Laboral</button>
+        <div id="cgt-chat-box">
+            <div class="cgt-chat-header">
+                <span>Asesoría Laboral CGT</span>
+                <button onclick="toggleCgtChat()">✕</button>
+            </div>
+            <div class="cgt-chat-messages" id="cgtChatMessages">
+                <div class="cgt-msg cgt-msg-bot">
+                    ¡Hola! Soy tu asistente de orientación laboral. ¿En qué puedo ayudarte hoy sobre tus derechos, vacaciones o permisos?
+                </div>
+            </div>
+            <div class="cgt-chat-footer">
+                <input type="text" id="cgtChatInput" placeholder="Escribe tu duda aquí..." onkeypress="if(event.key === 'Enter') sendCgtMessage()">
+                <button onclick="sendCgtMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script General y de Interacción del Chat -->
     <script>
         const ACCESS_KEY = "durrutivive1936";
 
@@ -441,21 +568,64 @@
             logoutBtn.style.display = 'none';
             passwordInput.value = '';
         }
-    </script>
-<!-- Botón flotante para abrir el chat -->
-<button id="chat-toggle" style="position: fixed; bottom: 20px; right: 20px; padding: 12px 18px; background: #0070f3; color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 1000;">
-  💬 Chat
-</button>
 
-<!-- Ventana del Chatbot -->
-<div id="chat-box" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 320px; height: 420px; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-direction: column; z-index: 1000;">
-  <div style="background: #0070f3; color: white; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-weight: bold;">
-    Asistente CGT
-  </div>
-  <div id="chat-messages" style="flex: 1; padding: 10px; overflow-y: auto; font-family: sans-serif; font-size: 14px;"></div>
-  <div style="display: flex; padding: 10px; border-top: 1px solid #eee;">
-    <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-    <button id="chat-send" style="margin-left: 5px; padding: 8px 12px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;">Enviar</button>
-  </div>
-</div></body>
+        /* Lógica del Chatbot */
+        let conversationHistory = [];
+
+        function toggleCgtChat() {
+            const box = document.getElementById('cgt-chat-box');
+            box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        async function sendCgtMessage() {
+            const input = document.getElementById('cgtChatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendCgtMessage(text, 'user');
+            input.value = '';
+
+            conversationHistory.push({ role: 'user', content: text });
+
+            const loadingId = appendCgtMessage('Escribiendo...', 'bot');
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages: conversationHistory })
+                });
+
+                const data = await response.json();
+                if (document.getElementById(loadingId)) {
+                    document.getElementById(loadingId).remove();
+                }
+
+                if (data.reply) {
+                    appendCgtMessage(data.reply, 'bot');
+                    conversationHistory.push({ role: 'assistant', content: data.reply });
+                } else {
+                    appendCgtMessage('Lo siento, ha ocurrido un error. Puedes enviar tu consulta a cgt.dqa4@gmail.com', 'bot');
+                }
+            } catch (e) {
+                if (document.getElementById(loadingId)) {
+                    document.getElementById(loadingId).remove();
+                }
+                appendCgtMessage('No fue posible conectar. Por favor escribe a cgt.dqa4@gmail.com', 'bot');
+            }
+        }
+
+        function appendCgtMessage(text, sender) {
+            const container = document.getElementById('cgtChatMessages');
+            const msgDiv = document.createElement('div');
+            const id = 'msg-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9);
+            msgDiv.id = id;
+            msgDiv.className = `cgt-msg ${sender === 'user' ? 'cgt-msg-user' : 'cgt-msg-bot'}`;
+            msgDiv.innerText = text;
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+            return id;
+        }
+    </script>
+</body>
 </html>
