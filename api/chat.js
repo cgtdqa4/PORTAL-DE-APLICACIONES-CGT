@@ -13,7 +13,8 @@ export default async function handler(req, res) {
     const { messages } = req.body;
     const lastUserMessage = messages[messages.length - 1].content;
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // Usamos el modelo v1 de Gemini Flash
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -31,17 +32,22 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
+    // Si hay un error de Google, lo imprimimos en los logs de Vercel para verlo claramente
+    if (!response.ok) {
+      console.error("DETALLE ERROR GOOGLE AI STUDIO:", JSON.stringify(data, null, 2));
+      return res.status(200).json({ 
+        reply: `Error de Google (${response.status}): ${data.error?.message || 'Revisa los logs de Vercel'}` 
+      });
+    }
+
     if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
       const reply = data.candidates[0].content.parts[0].text;
       return res.status(200).json({ reply });
     } else {
-      console.error("Error de la API de Google:", JSON.stringify(data));
-      return res.status(200).json({ 
-        reply: 'Error de la IA: Comprueba que tu API Key de Google AI Studio sea válida y tenga cuota activa.' 
-      });
+      return res.status(200).json({ reply: 'La IA no devolvió texto en su respuesta.' });
     }
   } catch (error) {
-    console.error("Error en servidor:", error);
+    console.error("Error de red en servidor:", error);
     return res.status(200).json({ reply: 'Error de conexión con el servidor.' });
   }
 }
