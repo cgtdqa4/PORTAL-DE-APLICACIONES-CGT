@@ -272,151 +272,6 @@ footer {
 footer strong {
   color: var(--cgt-red);
 }
-
-/* --- ESTILOS WIDGET MINI CHAT FLOTANTE DE GEMINI --- */
-#cgt-chat-toggle {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: var(--cgt-red);
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  transition: transform 0.2s ease, background-color 0.2s;
-}
-
-#cgt-chat-toggle:hover {
-  transform: scale(1.08);
-  background-color: var(--cgt-red-hover);
-}
-
-#cgt-chat-widget {
-  display: none;
-  position: fixed;
-  bottom: 95px;
-  right: 25px;
-  width: 360px;
-  height: 500px;
-  max-width: calc(100vw - 30px);
-  max-height: calc(100vh - 120px);
-  background-color: var(--cgt-dark-grey);
-  border: 1px solid var(--cgt-border);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  z-index: 9999;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.cgt-chat-header {
-  background-color: var(--cgt-black);
-  border-bottom: 2px solid var(--cgt-red);
-  padding: 12px 16px;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.cgt-chat-header h4 {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.cgt-chat-header-close {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.cgt-chat-header-close:hover {
-  color: #fff;
-}
-
-.cgt-chat-messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background-color: var(--cgt-dark-grey);
-}
-
-.chat-msg {
-  max-width: 85%;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  line-height: 1.4;
-  word-wrap: break-word;
-}
-
-.chat-msg.bot {
-  background-color: var(--cgt-card-bg);
-  color: var(--text-main);
-  border: 1px solid var(--cgt-border);
-  align-self: flex-start;
-}
-
-.chat-msg.user {
-  background-color: var(--cgt-red);
-  color: #ffffff;
-  align-self: flex-end;
-}
-
-.cgt-chat-input-area {
-  padding: 12px;
-  background-color: var(--cgt-black);
-  border-top: 1px solid var(--cgt-border);
-  display: flex;
-  gap: 8px;
-}
-
-.cgt-chat-input-area input {
-  flex: 1;
-  background-color: var(--cgt-dark-grey);
-  border: 1px solid var(--cgt-border);
-  border-radius: 6px;
-  padding: 10px 12px;
-  color: #fff;
-  font-size: 0.88rem;
-  outline: none;
-}
-
-.cgt-chat-input-area input:focus {
-  border-color: var(--cgt-red);
-}
-
-.cgt-chat-input-area button {
-  background-color: var(--cgt-red);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.cgt-chat-input-area button:hover {
-  background-color: var(--cgt-red-hover);
-}
 </style>
 </head>
 
@@ -431,21 +286,21 @@ footer strong {
   </header>
 
   <main>
-    <!-- HERRAMIENTAS LIBRES (VISIBLES SIEMPRE Y SIN CONTRASEÑA) -->
+    <!-- HERRAMIENTAS LIBRES (ACCESO PÚBLICO) -->
     <section class="section-block">
-      <h2 class="section-title">Herramientas de Uso Libre</h2>
+      <h2 class="section-title">Herramientas Libres (Acceso Público)</h2>
       <div class="apps-grid">
-        <a href="https://cgtdqa4.github.io/SIMULADOR--PRESTACION-MATERNIDAD-PATERNIDAD-RIESGO/" target="_blank" class="app-card">
+        <a href="https://cgtdqa4.github.io/BUSCADOR-CONVENIO-COLECTIVO/" target="_blank" class="app-card">
           <div>
-            <h3>Simulador Prestación Maternidad, Paternidad y Riesgo <span>→</span></h3>
-            <p>Cálculo estimado de la prestación por nacimiento, cuidado del menor o riesgo durante el embarazo.</p>
+            <h3>Buscador Convenio Colectivo <span>→</span></h3>
+            <p>Buscador de artículos y condiciones reguladas en el convenio colectivo.</p>
           </div>
         </a>
 
-        <a href="https://cgtdqa4.github.io/SIMULADOR-PRESTACION-FIJO-DISCONTINUO/" target="_blank" class="app-card">
+        <a href="https://cgtdqa4.github.io/BUSCADOR-ESTATUTO-TRABAJADORES/" target="_blank" class="app-card">
           <div>
-            <h3>Simulador Prestación Fijo Discontinuo <span>→</span></h3>
-            <p>Cálculo de prestación y desempleo adaptado a períodos de inactividad de fijos discontinuos.</p>
+            <h3>Buscador Estatuto Trabajadores <span>→</span></h3>
+            <p>Búsqueda directa y consulta de artículos del Estatuto de los Trabajadores.</p>
           </div>
         </a>
 
@@ -456,20 +311,48 @@ footer strong {
           </div>
         </a>
 
+        <a href="https://cgtdqa4.github.io/GUIA-DE-PERMISOS/" target="_blank" class="app-card">
+          <div>
+            <h3>Guía de Permisos <span>→</span></h3>
+            <p>Consulta rápida y detallada de permisos laborales, licencias y retribuciones.</p>
+          </div>
+        </a>
+
         <a href="https://cgtdqa4.github.io/GESTOR-DE-FLEXIS/" target="_blank" class="app-card">
           <div>
             <h3>Gestor de Flexis <span>→</span></h3>
             <p>Herramienta para el control, cálculo y seguimiento del saldo de horas flexibles.</p>
           </div>
         </a>
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR-PRESTACION-FIJO-DISCONTINUO/" target="_blank" class="app-card">
+          <div>
+            <h3>Simulador Prestación Fijo Discontinuo <span>→</span></h3>
+            <p>Cálculo de prestación y desempleo adaptado a períodos de inactividad de fijos discontinuos.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR--PRESTACION-MATERNIDAD-PATERNIDAD-RIESGO/" target="_blank" class="app-card">
+          <div>
+            <h3>Simulador Prestación Maternidad, Paternidad y Riesgo <span>→</span></h3>
+            <p>Cálculo estimado de la prestación por nacimiento, cuidado del menor o riesgo durante el embarazo.</p>
+          </div>
+        </a>
+
+        <a href="https://calculo-atrasos-reyf.vercel.app" target="_blank" class="app-card">
+          <div>
+            <h3>Cálculo Atrasos REYF <span>→</span></h3>
+            <p>Simulación y cálculo de atrasos salariales y regularizaciones del convenio.</p>
+          </div>
+        </a>
       </div>
     </section>
 
-    <!-- SECCIÓN DE AFILIADOS (REQUIERE CONTRASEÑA ABAJO) -->
+    <!-- HERRAMIENTAS EXCLUSIVAS AFILIADOS -->
     <section class="section-block">
-      <h2 class="section-title">Herramientas Exclusivas para Afiliados</h2>
+      <h2 class="section-title">Herramientas Exclusivas Afiliados</h2>
 
-      <!-- BLOQUE 1: RECUADRO DE LOGIN INCRUSTADO -->
+      <!-- FORMULARIO DE ACCESO -->
       <div id="affiliates-login" class="affiliates-auth-box">
         <h3>🔒 Área Reservada para Afiliados</h3>
         <p>Introduce la clave sindical para desbloquear las herramientas exclusivas.</p>
@@ -482,7 +365,7 @@ footer strong {
         </form>
       </div>
 
-      <!-- BLOQUE 2: APLICACIONES DE AFILIADOS (MOSTRADAS TRAS METER LA CLAVE) -->
+      <!-- APLICACIONES DESBLOQUEADAS -->
       <div id="affiliates-content" style="display: none;">
         <div class="logout-bar">
           <span>Acceso Afiliado Concedido</span>
@@ -496,30 +379,28 @@ footer strong {
               <p>Herramienta para revisar y comprobar los conceptos, complementos y descuentos en nómina.</p>
             </div>
           </a>
+
           <a href="https://calculora-finiquito-e-indemnizaci.vercel.app" target="_blank" class="app-card">
             <div>
               <h3>Calculadora Finiquito e Indemnización <span>→</span></h3>
               <p>Cálculo exacto de liquidación, finiquito e indemnizaciones por extinción de contrato.</p>
             </div>
           </a>
+
           <a href="https://calculo-salario-diario.vercel.app" target="_blank" class="app-card">
             <div>
               <h3>Cálculo Salario Diario <span>→</span></h3>
               <p>Determinación de la base reguladora y salario regulador diario para distintos cálculos.</p>
             </div>
           </a>
-          <a href="https://calculo-atrasos-reyf.vercel.app" target="_blank" class="app-card">
-            <div>
-              <h3>Cálculo Atrasos REYF <span>→</span></h3>
-              <p>Simulación y cálculo de atrasos salariales y regularizaciones del convenio.</p>
-            </div>
-          </a>
+
           <a href="https://simulador-bajas.vercel.app" target="_blank" class="app-card">
             <div>
               <h3>Simulador Bajas <span>→</span></h3>
               <p>Cálculo del complemento por incapacidad temporal (IT) y prestación por baja médica.</p>
             </div>
           </a>
+
           <a href="https://gestor-simulacion-reduccion-de-jorn.vercel.app" target="_blank" class="app-card">
             <div>
               <h3>Gestor Simulación Reducción de Jornada <span>→</span></h3>
@@ -536,29 +417,8 @@ footer strong {
   </footer>
 </div>
 
-<!-- BOTÓN FLOTANTE Y WIDGET MINI CHAT DE GEMINI -->
-<button id="cgt-chat-toggle" onclick="toggleCgtChat()" title="Asesoría Laboral CGT">💬</button>
-
-<div id="cgt-chat-widget">
-  <div class="cgt-chat-header">
-    <h4><span>🔴</span> Asesoría Laboral CGT</h4>
-    <button class="cgt-chat-header-close" onclick="toggleCgtChat()">✕</button>
-  </div>
-  
-  <div id="cgt-chat-messages" class="cgt-chat-messages">
-    <div class="chat-msg bot">
-      ¡Hola! Soy el asistente de orientación laboral de CGT. ¿En qué puedo ayudarte sobre tus derechos, vacaciones o permisos?
-    </div>
-  </div>
-
-  <div class="cgt-chat-input-area">
-    <input type="text" id="cgt-chat-input" placeholder="Escribe tu consulta laboral..." onkeydown="if(event.key==='Enter') sendCgtMessage()">
-    <button onclick="sendCgtMessage()">Enviar</button>
-  </div>
-</div>
-
 <script>
-// --- CONTROL DE ACCESO EXCLUSIVO PARA LA SECCIÓN DE AFILIADOS ---
+// CONTRASEÑA DE ACCESO A LA SECCIÓN DE AFILIADOS
 const ACCESS_KEY = "durrutivive1936";
 
 document.getElementById('login-form').addEventListener('submit', function(e) {
@@ -584,72 +444,9 @@ function logout() {
   location.reload();
 }
 
-// Mantiene desbloqueada la sección de afiliados si ya se autenticó en esta sesión
+// Mantener desbloqueado si ya se autenticó durante la sesión actual
 if (sessionStorage.getItem('cgt_authenticated') === 'true') {
   unlockAffiliates();
-}
-
-// --- LÓGICA DEL MINI CHAT DE GEMINI ---
-let chatHistory = [];
-
-function toggleCgtChat() {
-  const widget = document.getElementById('cgt-chat-widget');
-  const isHidden = widget.style.display === 'none' || widget.style.display === '';
-  widget.style.display = isHidden ? 'flex' : 'none';
-  if (isHidden) {
-    document.getElementById('cgt-chat-input').focus();
-  }
-}
-
-async function sendCgtMessage() {
-  const input = document.getElementById('cgt-chat-input');
-  const container = document.getElementById('cgt-chat-messages');
-  const text = input.value.trim();
-
-  if (!text) return;
-
-  const userMsg = document.createElement('div');
-  userMsg.className = 'chat-msg user';
-  userMsg.textContent = text;
-  container.appendChild(userMsg);
-
-  input.value = '';
-  container.scrollTop = container.scrollHeight;
-
-  chatHistory.push({ role: 'user', content: text });
-
-  const loadingMsg = document.createElement('div');
-  loadingMsg.className = 'chat-msg bot';
-  loadingMsg.textContent = 'Pensando respuesta...';
-  container.appendChild(loadingMsg);
-  container.scrollTop = container.scrollHeight;
-
-  try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: chatHistory })
-    });
-
-    const data = await response.json();
-    loadingMsg.remove();
-
-    const botMsg = document.createElement('div');
-    botMsg.className = 'chat-msg bot';
-    botMsg.textContent = data.reply || 'No se pudo obtener una respuesta válida.';
-    container.appendChild(botMsg);
-
-    chatHistory.push({ role: 'assistant', content: botMsg.textContent });
-
-  } catch (error) {
-    loadingMsg.remove();
-    const errorMsg = document.createElement('div');
-    errorMsg.className = 'chat-msg bot';
-    errorMsg.textContent = 'Error de conexión. Reintenta tu pregunta en unos segundos o escribe a cgt.dqa4@gmail.com.';
-    container.appendChild(errorMsg);
-  }
-
-  container.scrollTop = container.scrollHeight;
 }
 </script>
 
