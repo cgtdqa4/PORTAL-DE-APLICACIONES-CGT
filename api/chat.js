@@ -13,8 +13,8 @@ export default async function handler(req, res) {
     const { messages } = req.body;
     const lastUserMessage = messages[messages.length - 1].content;
 
-    // Cambiamos a gemini-pro que es el modelo estándar compatible con la versión v1
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
+    // Ruta v1beta con el modelo gemini-1.5-flash correcto
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
