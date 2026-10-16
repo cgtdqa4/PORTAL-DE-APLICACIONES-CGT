@@ -1,25 +1,53 @@
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Método no permitido' });
+  }
 
-    try {
-        const { messages } = req.body;
-        
-        // Aquí puedes integrar la lógica para responder (por ejemplo, respuestas automáticas o llamadas a una API de IA).
-        // De momento, como respuesta de prueba o predeterminada:
-        const userLastMessage = messages[messages.length - 1].content.toLowerCase();
-        
-        let reply = "Gracias por tu consulta. Para gestiones específicas o dudas concretas sobre tus derechos, recuerda que puedes ponerte en contacto con la sección sindical en cgt.dqa4@gmail.com";
+  const { messages } = req.body;
+  const apiKey = process.env.GEMINI_API_KEY;
 
-        if (userLastMessage.includes("vacaciones")) {
-            reply = "Las vacaciones se planifican según convenio. Consulta la sección de herramientas o contacta con la delegación.";
-        } else if (userLastMessage.includes("permiso")) {
-            reply = "Puedes revisar los detalles actualizados en la Guía de Permisos disponible en la sección de herramientas libres.";
+  if (!apiKey) {
+    return res.status(500).json({ reply: 'Error de configuración: Falta la API Key en el servidor.' });
+  }
+
+  // Convertimos el historial al formato que entiende Gemini API
+  const contents = messages.map(msg => ({
+    role: msg.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: msg.content }]
+  }));
+
+  // Prompt del sistema para definir la personalidad laboral y sindical del bot
+  const systemInstruction = {
+    parts: [{
+      text: `Eres el Asistente de Asesoría Laboral de la Sección Sindical de CGT en Amazon DQA4.
+Tu objetivo es responder las consultas laborales de los trabajadores de manera precisa, clara, empática y rigurosa basándote en el Estatuto de los Trabajadores, convenios aplicables y normativa laboral española.
+Si la consulta requiere revisar documentación privada o un análisis legal detallado, aconseja al trabajador ponerse en contacto directamente con la representación sindical en cgt.dqa4@gmail.com.`
+    }]
+  };
+
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: systemInstruction,
+        contents: contents,
+        generationConfig: {
+          temperature: 0.4,
+          maxOutputTokens: 500
         }
+      })
+    });
 
-        return res.status(200).json({ reply });
-    } catch (error) {
-        return res.status(500).json({ error: 'Internal Server Error' });
+    const data = await response.json();
+
+    if (data.candidates && data.candidates[0].content.parts[0].text) {
+      const reply = data.candidates[0].content.parts[0].text;
+      return res.status(200).json({ reply });
+    } else {
+      return res.status(500).json({ reply: 'No se pudo generar respuesta de la IA.' });
     }
+  } catch (error) {
+    return res.status(500).json({ reply: 'Error de conexión con el servicio de IA.' });
+  }
 }
