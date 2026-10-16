@@ -576,44 +576,31 @@
             const box = document.getElementById('cgt-chat-box');
             box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
         }
+function sendCgtMessage() {
+    const input = document.getElementById('cgtChatInput');
+    const text = input.value.trim();
+    if (!text) return;
 
-        async function sendCgtMessage() {
-            const input = document.getElementById('cgtChatInput');
-            const text = input.value.trim();
-            if (!text) return;
+    appendCgtMessage(text, 'user');
+    input.value = '';
 
-            appendCgtMessage(text, 'user');
-            input.value = '';
+    const lowerText = text.toLowerCase();
 
-            conversationHistory.push({ role: 'user', content: text });
+    // Simular un pequeño tiempo de respuesta
+    setTimeout(() => {
+        let reply = "Para consultas detalladas o asesoría individualizada, ponte en contacto con la sección sindical en cgt.dqa4@gmail.com";
 
-            const loadingId = appendCgtMessage('Escribiendo...', 'bot');
-
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ messages: conversationHistory })
-                });
-
-                const data = await response.json();
-                if (document.getElementById(loadingId)) {
-                    document.getElementById(loadingId).remove();
-                }
-
-                if (data.reply) {
-                    appendCgtMessage(data.reply, 'bot');
-                    conversationHistory.push({ role: 'assistant', content: data.reply });
-                } else {
-                    appendCgtMessage('Lo siento, ha ocurrido un error. Puedes enviar tu consulta a cgt.dqa4@gmail.com', 'bot');
-                }
-            } catch (e) {
-                if (document.getElementById(loadingId)) {
-                    document.getElementById(loadingId).remove();
-                }
-                appendCgtMessage('No fue posible conectar. Por favor escribe a cgt.dqa4@gmail.com', 'bot');
-            }
+        if (lowerText.includes("vacaciones")) {
+            reply = "Según el Estatuto de los Trabajadores, te corresponden 30 días naturales (o 22 laborables) por año completo trabajado. Si estás desde el 1 de enero, estás acumulando la parte proporcional del año en curso (aprox. 2,5 días naturales por mes trabajado).";
+        } else if (lowerText.includes("permiso") || lowerText.includes("licencia")) {
+            reply = "Puedes consultar la duración y requisitos de cada tipo de permiso en el enlace 'Guía de Permisos' de la sección principal.";
+        } else if (lowerText.includes("baja") || lowerText.includes("it")) {
+            reply = "Puedes calcular la prestación y complementos por incapacidad temporal utilizando el 'Simulador Bajas' de la zona de afiliados.";
         }
+
+        appendCgtMessage(reply, 'bot');
+    }, 500);
+}
 
         function appendCgtMessage(text, sender) {
             const container = document.getElementById('cgtChatMessages');
