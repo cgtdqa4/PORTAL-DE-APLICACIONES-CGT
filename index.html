@@ -1,484 +1,657 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Aplicaciones - CGT DQA4</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            /* PALETA OFICIAL CGT (Rojo y Negro) */
-            --cgt-red: #cc0000;
-            --cgt-red-hover: #e60000;
-            --cgt-black: #121212;
-            --cgt-dark-grey: #1e1e1e;
-            --cgt-card-bg: #262626;
-            --cgt-border: #3d3d3d;
-            --text-main: #f5f5f5;
-            --text-muted: #a3a3a3;
-            --accent-github: #ff4d4d;
-            --accent-vercel: #ffffff;
-            --error-color: #ff6b6b;
-            --radius: 12px;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Aplicaciones - CGT DQA4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
+<style>
+:root {
+  /* PALETA OFICIAL CGT (Rojo y Negro) */
+  --cgt-red: #cc0000;
+  --cgt-red-hover: #e60000;
+  --cgt-black: #121212;
+  --cgt-dark-grey: #1e1e1e;
+  --cgt-card-bg: #262626;
+  --cgt-border: #3d3d3d;
+  --text-main: #f5f5f5;
+  --text-muted: #a3a3a3;
+  --error-color: #ff6b6b;
+  --radius: 12px;
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
 
-        body {
-            background-color: var(--cgt-black);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 20px;
-        }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
 
-        /* PANTALLA DE LOGIN */
-        #login-screen {
-            background-color: var(--cgt-dark-grey);
-            border: 1px solid var(--cgt-border);
-            border-top: 4px solid var(--cgt-red);
-            padding: 40px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            margin-top: 8vh;
-            transition: all 0.3s ease;
-        }
+body {
+  background-color: var(--cgt-black);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+}
 
-        .login-badge {
-            background: rgba(204, 0, 0, 0.15);
-            color: var(--cgt-red);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            display: inline-block;
-            margin-bottom: 15px;
-            border: 1px solid rgba(204, 0, 0, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+#app-portal {
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto;
+}
 
-        #login-screen h1 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-            font-weight: 800;
-            color: var(--text-main);
-        }
+header.portal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--cgt-red);
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
 
-        #login-screen p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-        }
+.header-title h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
+.header-title h1 span {
+  color: var(--cgt-red);
+}
 
-        .input-group label {
-            display: block;
-            font-size: 0.85rem;
-            margin-bottom: 6px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+.header-title p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
 
-        .input-group input {
-            width: 100%;
-            padding: 12px 16px;
-            background-color: var(--cgt-black);
-            border: 1px solid var(--cgt-border);
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
+.section-block {
+  margin-bottom: 45px;
+}
 
-        .input-group input:focus {
-            border-color: var(--cgt-red);
-        }
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--cgt-border);
+  color: #ffffff;
+}
 
-        button.btn-primary {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--cgt-red);
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
 
-        button.btn-primary:hover {
-            background-color: var(--cgt-red-hover);
-        }
+.app-card {
+  background-color: var(--cgt-card-bg);
+  border: 1px solid var(--cgt-border);
+  border-radius: var(--radius);
+  padding: 22px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
 
-        .error-msg {
-            color: var(--error-color);
-            font-size: 0.85rem;
-            margin-top: 12px;
-            display: none;
-            font-weight: 500;
-        }
+.app-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--cgt-red);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
 
-        /* PORTAL PRINCIPAL */
-        #app-portal {
-            display: none;
-            width: 100%;
-            max-width: 1000px;
-            margin: 20px auto;
-        }
+.app-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: #555;
+}
 
-        header.portal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--cgt-red);
-            margin-bottom: 35px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+.app-card:hover::before {
+  opacity: 1;
+}
 
-        .header-title h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.app-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
 
-        .header-title h1 span {
-            color: var(--cgt-red);
-        }
+.app-card p {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
 
-        .header-title p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
+/* CAJA DE ACCESO A AFILIADOS */
+.affiliates-auth-box {
+  background-color: var(--cgt-dark-grey);
+  border: 1px solid var(--cgt-border);
+  border-left: 4px solid var(--cgt-red);
+  padding: 30px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 500px;
+  margin: 10px 0;
+}
 
-        .btn-logout {
-            background-color: transparent;
-            border: 1px solid var(--cgt-border);
-            color: var(--text-muted);
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
+.affiliates-auth-box h3 {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
 
-        .btn-logout:hover {
-            background-color: var(--cgt-red);
-            color: #fff;
-            border-color: var(--cgt-red);
-        }
+.affiliates-auth-box p {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+}
 
-        .section-block {
-            margin-bottom: 45px;
-        }
+.input-group-inline {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--cgt-border);
-        }
+.input-group-inline input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 16px;
+  background-color: var(--cgt-black);
+  border: 1px solid var(--cgt-border);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+}
 
-        .section-github .section-title {
-            color: var(--accent-github);
-        }
+.input-group-inline input:focus {
+  border-color: var(--cgt-red);
+}
 
-        .section-vercel .section-title {
-            color: var(--accent-vercel);
-        }
+.btn-inline {
+  padding: 12px 20px;
+  background-color: var(--cgt-red);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
+.btn-inline:hover {
+  background-color: var(--cgt-red-hover);
+}
 
-        .app-card {
-            background-color: var(--cgt-card-bg);
-            border: 1px solid var(--cgt-border);
-            border-radius: var(--radius);
-            padding: 22px;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
+.error-msg {
+  color: var(--error-color);
+  font-size: 0.85rem;
+  margin-top: 10px;
+  display: none;
+  font-weight: 500;
+}
 
-        .app-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background-color: var(--cgt-red);
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
+.logout-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(204, 0, 0, 0.1);
+  border: 1px solid rgba(204, 0, 0, 0.3);
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
 
-        .app-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow);
-            border-color: #555;
-        }
+.logout-bar span {
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: 600;
+}
 
-        .app-card:hover::before {
-            opacity: 1;
-        }
+.btn-logout {
+  background-color: transparent;
+  border: 1px solid var(--cgt-border);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
 
-        .app-card h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-        }
+.btn-logout:hover {
+  background-color: var(--cgt-red);
+  color: #fff;
+  border-color: var(--cgt-red);
+}
 
-        .app-card p {
-            color: var(--text-muted);
-            font-size: 0.88rem;
-            line-height: 1.45;
-            margin-bottom: 18px;
-        }
+footer {
+  margin-top: 40px;
+  padding: 25px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--cgt-border);
+  width: 100%;
+}
 
-        .app-tag {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 700;
-            align-self: flex-start;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+footer strong {
+  color: var(--cgt-red);
+}
 
-        .tag-github {
-            background: rgba(204, 0, 0, 0.2);
-            color: var(--accent-github);
-            border: 1px solid rgba(204, 0, 0, 0.4);
-        }
+/* --- ESTILOS WIDGET MINI CHAT FLOTANTE DE GEMINI --- */
+#cgt-chat-toggle {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--cgt-red);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  transition: transform 0.2s ease, background-color 0.2s;
+}
 
-        .tag-vercel {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--accent-vercel);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+#cgt-chat-toggle:hover {
+  transform: scale(1.08);
+  background-color: var(--cgt-red-hover);
+}
 
-        footer {
-            margin-top: auto;
-            padding: 25px 20px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--cgt-border);
-            width: 100%;
-            max-width: 1000px;
-        }
+#cgt-chat-widget {
+  display: none;
+  position: fixed;
+  bottom: 95px;
+  right: 25px;
+  width: 360px;
+  height: 500px;
+  max-width: calc(100vw - 30px);
+  max-height: calc(100vh - 120px);
+  background-color: var(--cgt-dark-grey);
+  border: 1px solid var(--cgt-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 9999;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-        footer strong {
-            color: var(--cgt-red);
-        }
-    </style>
+.cgt-chat-header {
+  background-color: var(--cgt-black);
+  border-bottom: 2px solid var(--cgt-red);
+  padding: 12px 16px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cgt-chat-header h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cgt-chat-header-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.cgt-chat-header-close:hover {
+  color: #fff;
+}
+
+.cgt-chat-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--cgt-dark-grey);
+}
+
+.chat-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.chat-msg.bot {
+  background-color: var(--cgt-card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--cgt-border);
+  align-self: flex-start;
+}
+
+.chat-msg.user {
+  background-color: var(--cgt-red);
+  color: #ffffff;
+  align-self: flex-end;
+}
+
+.cgt-chat-input-area {
+  padding: 12px;
+  background-color: var(--cgt-black);
+  border-top: 1px solid var(--cgt-border);
+  display: flex;
+  gap: 8px;
+}
+
+.cgt-chat-input-area input {
+  flex: 1;
+  background-color: var(--cgt-dark-grey);
+  border: 1px solid var(--cgt-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.cgt-chat-input-area input:focus {
+  border-color: var(--cgt-red);
+}
+
+.cgt-chat-input-area button {
+  background-color: var(--cgt-red);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cgt-chat-input-area button:hover {
+  background-color: var(--cgt-red-hover);
+}
+</style>
 </head>
+
 <body>
 
-    <!-- PANTALLA DE ACCESO -->
-    <div id="login-screen">
-        <span class="login-badge">CGT - Área Reservada</span>
-        <h1>Acceso a Afiliados</h1>
-        <p>Introduce la clave sindical para acceder al portal completo de aplicaciones.</p>
-        
+<div id="app-portal">
+  <header class="portal-header">
+    <div class="header-title">
+      <h1><span>CGT</span> Portal de Apps</h1>
+      <p>Plataforma de herramientas sindicales y de cálculo</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERRAMIENTAS LIBRES (VISIBLES SIEMPRE Y SIN CONTRASEÑA) -->
+    <section class="section-block">
+      <h2 class="section-title">Herramientas de Uso Libre</h2>
+      <div class="apps-grid">
+        <a href="https://cgtdqa4.github.io/SIMULADOR--PRESTACION-MATERNIDAD-PATERNIDAD-RIESGO/" target="_blank" class="app-card">
+          <div>
+            <h3>Simulador Prestación Maternidad, Paternidad y Riesgo <span>→</span></h3>
+            <p>Cálculo estimado de la prestación por nacimiento, cuidado del menor o riesgo durante el embarazo.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR-PRESTACION-FIJO-DISCONTINUO/" target="_blank" class="app-card">
+          <div>
+            <h3>Simulador Prestación Fijo Discontinuo <span>→</span></h3>
+            <p>Cálculo de prestación y desempleo adaptado a períodos de inactividad de fijos discontinuos.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR-IRPF-CGT/" target="_blank" class="app-card">
+          <div>
+            <h3>Simulador IRPF CGT <span>→</span></h3>
+            <p>Estimación del tipo de retención y ajuste de IRPF sobre los rendimientos del trabajo.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/GESTOR-DE-FLEXIS/" target="_blank" class="app-card">
+          <div>
+            <h3>Gestor de Flexis <span>→</span></h3>
+            <p>Herramienta para el control, cálculo y seguimiento del saldo de horas flexibles.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE AFILIADOS (REQUIERE CONTRASEÑA ABAJO) -->
+    <section class="section-block">
+      <h2 class="section-title">Herramientas Exclusivas para Afiliados</h2>
+
+      <!-- BLOQUE 1: RECUADRO DE LOGIN INCRUSTADO -->
+      <div id="affiliates-login" class="affiliates-auth-box">
+        <h3>🔒 Área Reservada para Afiliados</h3>
+        <p>Introduce la clave sindical para desbloquear las herramientas exclusivas.</p>
         <form id="login-form">
-            <div class="input-group">
-                <label for="password">Contraseña de acceso</label>
-                <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
-            </div>
-            <button type="submit" class="btn-primary">Entrar al Portal</button>
-            <div id="error-message" class="error-msg">Clave incorrecta. Contacta con la Sección Sindical de CGT.</div>
+          <div class="input-group-inline">
+            <input type="password" id="password" placeholder="Contraseña de acceso" required autocomplete="current-password">
+            <button type="submit" class="btn-inline">Acceder</button>
+          </div>
+          <div id="error-message" class="error-msg">Clave incorrecta. Contacta con la Sección Sindical de CGT.</div>
         </form>
-    </div>
+      </div>
 
-    <!-- PORTAL DE APLICACIONES -->
-    <div id="app-portal">
-        <header class="portal-header">
-            <div class="header-title">
-                <h1><span>CGT</span> Portal de Apps</h1>
-                <p>Plataforma de herramientas sindicales y de cálculo</p>
+      <!-- BLOQUE 2: APLICACIONES DE AFILIADOS (MOSTRADAS TRAS METER LA CLAVE) -->
+      <div id="affiliates-content" style="display: none;">
+        <div class="logout-bar">
+          <span>Acceso Afiliado Concedido</span>
+          <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+        </div>
+
+        <div class="apps-grid">
+          <a href="https://verificador-de-nominas.vercel.app" target="_blank" class="app-card">
+            <div>
+              <h3>Verificador de Nóminas <span>→</span></h3>
+              <p>Herramienta para revisar y comprobar los conceptos, complementos y descuentos en nómina.</p>
             </div>
-            <button id="logout-btn" class="btn-logout">Cerrar Sesión</button>
-        </header>
+          </a>
+          <a href="https://calculora-finiquito-e-indemnizaci.vercel.app" target="_blank" class="app-card">
+            <div>
+              <h3>Calculadora Finiquito e Indemnización <span>→</span></h3>
+              <p>Cálculo exacto de liquidación, finiquito e indemnizaciones por extinción de contrato.</p>
+            </div>
+          </a>
+          <a href="https://calculo-salario-diario.vercel.app" target="_blank" class="app-card">
+            <div>
+              <h3>Cálculo Salario Diario <span>→</span></h3>
+              <p>Determinación de la base reguladora y salario regulador diario para distintos cálculos.</p>
+            </div>
+          </a>
+          <a href="https://calculo-atrasos-reyf.vercel.app" target="_blank" class="app-card">
+            <div>
+              <h3>Cálculo Atrasos REYF <span>→</span></h3>
+              <p>Simulación y cálculo de atrasos salariales y regularizaciones del convenio.</p>
+            </div>
+          </a>
+          <a href="https://simulador-bajas.vercel.app" target="_blank" class="app-card">
+            <div>
+              <h3>Simulador Bajas <span>→</span></h3>
+              <p>Cálculo del complemento por incapacidad temporal (IT) y prestación por baja médica.</p>
+            </div>
+          </a>
+          <a href="https://gestor-simulacion-reduccion-de-jorn.vercel.app" target="_blank" class="app-card">
+            <div>
+              <h3>Gestor Simulación Reducción de Jornada <span>→</span></h3>
+              <p>Simulador para cuantificar el impacto salarial de reducciones de jornada laboral.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-        <main>
-            <!-- HERRAMIENTAS LIBRES -->
-            <section class="section-block section-github">
-                <h2 class="section-title">Herramientas Libres (GitHub Pages)</h2>
-                <div class="apps-grid">
-                    <a href="https://cgtdqa4.github.io/SIMULADOR--PRESTACION-MATERNIDAD-PATERNIDAD-RIESGO/" target="_blank" class="app-card">
-                        <div>
-                            <h3>Simulador Prestación Maternidad, Paternidad y Riesgo <span>→</span></h3>
-                            <p>Cálculo estimado de la prestación por nacimiento, cuidado del menor o riesgo durante el embarazo.</p>
-                        </div>
-                        <span class="app-tag tag-github">Libre / GitHub</span>
-                    </a>
-                    <a href="https://cgtdqa4.github.io/SIMULADOR-PRESTACION-FIJO-DISCONTINUO/" target="_blank" class="app-card">
-                        <div>
-                            <h3>Simulador Prestación Fijo Discontinuo <span>→</span></h3>
-                            <p>Cálculo de prestación y desempleo adaptado a períodos de inactividad de fijos discontinuos.</p>
-                        </div>
-                        <span class="app-tag tag-github">Libre / GitHub</span>
-                    </a>
-                    <a href="https://cgtdqa4.github.io/SIMULADOR-IRPF-CGT/" target="_blank" class="app-card">
-                        <div>
-                            <h3>Simulador IRPF CGT <span>→</span></h3>
-                            <p>Estimación del tipo de retención y ajuste de IRPF sobre los rendimientos del trabajo.</p>
-                        </div>
-                        <span class="app-tag tag-github">Libre / GitHub</span>
-                    </a>
-                    <a href="https://cgtdqa4.github.io/GESTOR-DE-FLEXIS/" target="_blank" class="app-card">
-                        <div>
-                            <h3>Gestor de Flexis <span>→</span></h3>
-                            <p>Herramienta para el control, cálculo y seguimiento del saldo de horas flexibles.</p>
-                        </div>
-                        <span class="app-tag tag-github">Libre / GitHub</span>
-                    </a>
-                </div>
-            </section>
+  <footer>
+    Sección Sindical <strong>CGT Amazon DQA4</strong> — Todos los derechos reservados.
+  </footer>
+</div>
 
-            <!-- HERRAMIENTAS AFILIADOS -->
-            <section class="section-block section-vercel">
-                <h2 class="section-title">Herramientas Exclusivas Afiliados (Vercel)</h2>
-                <div class="apps-grid">
-                    <a href="https://verificador-de-nominas.vercel.app" target="_blank" class="app-card">
-                        <div>
-                            <h3>Verificador de Nóminas <span>→</span></h3>
-                            <p>Herramienta para revisar y comprobar los conceptos, complementos y descuentos en nómina.</p>
-                        </div>
-                        <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
-                    </a>
-                    <a href="https://calculora-finiquito-e-indemnizaci.vercel.app" target="_blank" class="app-card">
-                        <div>
-                            <h3>Calculadora Finiquito e Indemnización <span>→</span></h3>
-                            <p>Cálculo exacto de liquidación, finiquito e indemnizaciones por extinción de contrato.</p>
-                        </div>
-                        <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
-                    </a>
-                    <a href="https://calculo-salario-diario.vercel.app" target="_blank" class="app-card">
-                        <div>
-                            <h3>Cálculo Salario Diario <span>→</span></h3>
-                            <p>Determinación de la base reguladora y salario regulador diario para distintos cálculos.</p>
-                        </div>
-                        <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
-                    </a>
-                    <a href="https://calculo-atrasos-reyf.vercel.app" target="_blank" class="app-card">
-                        <div>
-                            <h3>Cálculo Atrasos REYF <span>→</span></h3>
-                            <p>Simulación y cálculo de atrasos salariales y regularizaciones del convenio.</p>
-                        </div>
-                        <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
-                    </a>
-                    <a href="https://simulador-bajas.vercel.app" target="_blank" class="app-card">
-                        <div>
-                            <h3>Simulador Bajas <span>→</span></h3>
-                            <p>Cálculo del complemento por incapacidad temporal (IT) y prestación por baja médica.</p>
-                        </div>
-                        <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
-                    </a>
-                    <a href="https://gestor-simulacion-reduccion-de-jorn.vercel.app" target="_blank" class="app-card">
-                        <div>
-                            <h3>Gestor Simulación Reducción de Jornada <span>→</span></h3>
-                            <p>Simulador para cuantificar el impacto salarial de reducciones de jornada laboral.</p>
-                        </div>
-                        <span class="app-tag tag-vercel">Exclusivo Afiliados</span>
-                    </a>
-                </div>
-            </section>
-        </main>
+<!-- BOTÓN FLOTANTE Y WIDGET MINI CHAT DE GEMINI -->
+<button id="cgt-chat-toggle" onclick="toggleCgtChat()" title="Asesoría Laboral CGT">💬</button>
+
+<div id="cgt-chat-widget">
+  <div class="cgt-chat-header">
+    <h4><span>🔴</span> Asesoría Laboral CGT</h4>
+    <button class="cgt-chat-header-close" onclick="toggleCgtChat()">✕</button>
+  </div>
+  
+  <div id="cgt-chat-messages" class="cgt-chat-messages">
+    <div class="chat-msg bot">
+      ¡Hola! Soy el asistente de orientación laboral de CGT. ¿En qué puedo ayudarte sobre tus derechos, vacaciones o permisos?
     </div>
+  </div>
 
-    <footer>
-        <p>© 2026 <strong>CGT - Sección Sindical</strong>. Uso exclusivo para la afiliación autorizada.</p>
-    </footer>
+  <div class="cgt-chat-input-area">
+    <input type="text" id="cgt-chat-input" placeholder="Escribe tu consulta laboral..." onkeydown="if(event.key==='Enter') sendCgtMessage()">
+    <button onclick="sendCgtMessage()">Enviar</button>
+  </div>
+</div>
 
-    <script>
-        // CONTRASEÑA DE ACCESO PARA AFILIADOS (Modificable)
-        const ACCESS_KEY = "cgt2026";
+<script>
+// --- CONTROL DE ACCESO EXCLUSIVO PARA LA SECCIÓN DE AFILIADOS ---
+const ACCESS_KEY = "durrutivive1936";
 
-        const loginForm = document.getElementById('login-form');
-        const passwordInput = document.getElementById('password');
-        const errorMessage = document.getElementById('error-message');
-        const loginScreen = document.getElementById('login-screen');
-        const appPortal = document.getElementById('app-portal');
-        const logoutBtn = document.getElementById('logout-btn');
+document.getElementById('login-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const inputPass = document.getElementById('password').value;
+  const errorMsg = document.getElementById('error-message');
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('cgt_auth') === 'true') {
-                showPortal();
-            }
-        });
+  if (inputPass === ACCESS_KEY) {
+    sessionStorage.setItem('cgt_authenticated', 'true');
+    unlockAffiliates();
+  } else {
+    errorMsg.style.display = 'block';
+  }
+});
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (passwordInput.value.trim() === ACCESS_KEY) {
-                sessionStorage.setItem('cgt_auth', 'true');
-                errorMessage.style.display = 'none';
-                showPortal();
-            } else {
-                errorMessage.style.display = 'block';
-                passwordInput.value = '';
-            }
-        });
+function unlockAffiliates() {
+  document.getElementById('affiliates-login').style.display = 'none';
+  document.getElementById('affiliates-content').style.display = 'block';
+}
 
-        logoutBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('cgt_auth');
-            showLogin();
-        });
+function logout() {
+  sessionStorage.removeItem('cgt_authenticated');
+  location.reload();
+}
 
-        function showPortal() {
-            loginScreen.style.display = 'none';
-            appPortal.style.display = 'block';
-        }
+// Mantiene desbloqueada la sección de afiliados si ya se autenticó en esta sesión
+if (sessionStorage.getItem('cgt_authenticated') === 'true') {
+  unlockAffiliates();
+}
 
-        function showLogin() {
-            appPortal.style.display = 'none';
-            loginScreen.style.display = 'block';
-        }
-    </script>
+// --- LÓGICA DEL MINI CHAT DE GEMINI ---
+let chatHistory = [];
+
+function toggleCgtChat() {
+  const widget = document.getElementById('cgt-chat-widget');
+  const isHidden = widget.style.display === 'none' || widget.style.display === '';
+  widget.style.display = isHidden ? 'flex' : 'none';
+  if (isHidden) {
+    document.getElementById('cgt-chat-input').focus();
+  }
+}
+
+async function sendCgtMessage() {
+  const input = document.getElementById('cgt-chat-input');
+  const container = document.getElementById('cgt-chat-messages');
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg user';
+  userMsg.textContent = text;
+  container.appendChild(userMsg);
+
+  input.value = '';
+  container.scrollTop = container.scrollHeight;
+
+  chatHistory.push({ role: 'user', content: text });
+
+  const loadingMsg = document.createElement('div');
+  loadingMsg.className = 'chat-msg bot';
+  loadingMsg.textContent = 'Pensando respuesta...';
+  container.appendChild(loadingMsg);
+  container.scrollTop = container.scrollHeight;
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatHistory })
+    });
+
+    const data = await response.json();
+    loadingMsg.remove();
+
+    const botMsg = document.createElement('div');
+    botMsg.className = 'chat-msg bot';
+    botMsg.textContent = data.reply || 'No se pudo obtener una respuesta válida.';
+    container.appendChild(botMsg);
+
+    chatHistory.push({ role: 'assistant', content: botMsg.textContent });
+
+  } catch (error) {
+    loadingMsg.remove();
+    const errorMsg = document.createElement('div');
+    errorMsg.className = 'chat-msg bot';
+    errorMsg.textContent = 'Error de conexión. Reintenta tu pregunta en unos segundos o escribe a cgt.dqa4@gmail.com.';
+    container.appendChild(errorMsg);
+  }
+
+  container.scrollTop = container.scrollHeight;
+}
+</script>
+
 </body>
 </html>
