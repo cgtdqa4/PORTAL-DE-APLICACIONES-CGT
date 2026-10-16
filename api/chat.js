@@ -13,8 +13,8 @@ export default async function handler(req, res) {
     const { messages } = req.body;
     const lastUserMessage = messages[messages.length - 1].content;
 
-    // Usamos el modelo v1 de Gemini Flash
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // Cambiamos a gemini-pro que es el modelo estándar compatible con la versión v1
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -32,11 +32,10 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Si hay un error de Google, lo imprimimos en los logs de Vercel para verlo claramente
     if (!response.ok) {
       console.error("DETALLE ERROR GOOGLE AI STUDIO:", JSON.stringify(data, null, 2));
       return res.status(200).json({ 
-        reply: `Error de Google (${response.status}): ${data.error?.message || 'Revisa los logs de Vercel'}` 
+        reply: `Error de Google (${response.status}): ${data.error?.message || 'Error desconocido'}` 
       });
     }
 
