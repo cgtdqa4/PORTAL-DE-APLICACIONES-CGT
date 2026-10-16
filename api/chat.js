@@ -19,27 +19,15 @@ export default async function handler(req, res) {
 
     const systemPrompt = "Eres el Asistente de Asesoría Laboral de la Sección Sindical de CGT en Amazon DQA4. Responde de forma clara, concisa y profesional a las consultas laborales de los trabajadores basándote en el Estatuto de los Trabajadores. Si requiere estudio de nómina o documentos, remítelos a cgt.dqa4@gmail.com.";
 
-    let replyText = "";
+    // Usamos el modelo actual exigido por la API de Google
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-3.8-flash",
+      systemInstruction: systemPrompt
+    });
 
-    // Intentamos primero con gemini-1.5-flash
-    try {
-      const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
-        systemInstruction: systemPrompt
-      });
-      const result = await model.generateContent(lastUserMessage);
-      const response = await result.response;
-      replyText = response.text();
-    } catch (e) {
-      console.warn("Fallo con gemini-1.5-flash, probando con gemini-2.5-flash...", e.message);
-      const fallbackModel = genAI.getGenerativeModel({ 
-        model: "gemini-2.5-flash",
-        systemInstruction: systemPrompt 
-      });
-      const result = await fallbackModel.generateContent(lastUserMessage);
-      const response = await result.response;
-      replyText = response.text();
-    }
+    const result = await model.generateContent(lastUserMessage);
+    const response = await result.response;
+    const replyText = response.text();
 
     if (replyText) {
       return res.status(200).json({ reply: replyText });
@@ -50,7 +38,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Error al conectar con Gemini SDK:", error);
     return res.status(200).json({ 
-      reply: `Error en la API de Google: ${error.message || 'Comprueba que tu API Key sea de un proyecto nuevo en Google AI Studio.'}` 
+      reply: `Error en la API de Google: ${error.message || 'Comprueba que tu API Key sea válida.'}` 
     });
   }
 }
