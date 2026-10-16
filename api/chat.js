@@ -3,51 +3,49 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método no permitido' });
   }
 
-  const { messages } = req.body;
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ reply: 'Error de configuración: Falta la API Key en el servidor.' });
+    return res.status(200).json({ reply: 'Error: Falta configurar la variable GEMINI_API_KEY en Vercel.' });
   }
 
-  // Convertimos el historial al formato que entiende Gemini API
-  const contents = messages.map(msg => ({
-    role: msg.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: msg.content }]
-  }));
-
-  // Prompt del sistema para definir la personalidad laboral y sindical del bot
-  const systemInstruction = {
-    parts: [{
-      text: `Eres el Asistente de Asesoría Laboral de la Sección Sindical de CGT en Amazon DQA4.
-Tu objetivo es responder las consultas laborales de los trabajadores de manera precisa, clara, empática y rigurosa basándote en el Estatuto de los Trabajadores, convenios aplicables y normativa laboral española.
-Si la consulta requiere revisar documentación privada o un análisis legal detallado, aconseja al trabajador ponerse en contacto directamente con la representación sindical en cgt.dqa4@gmail.com.`
-    }]
-  };
-
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    const { messages } = req.body;
+    const lastMessage = messages[messages.length - 1].content;
+
+    // Usamos el endpoint directo con la clave en la URL
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system_instruction: systemInstruction,
-        contents: contents,
-        generationConfig: {
-          temperature: 0.4,
-          maxOutputTokens: 500
-        }
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { 
+                text: `Eres el Asistente de Asesoría Laboral de la Sección Sindical de CGT en Amazon DQA4. Responde de forma clara, concisa y profesional a la siguiente duda laboral basándote en el Estatuto de los Trabajadores: ${lastMessage}` 
+              }
+            ]
+          }
+        ]
       })
     });
 
     const data = await response.json();
 
-    if (data.candidates && data.candidates[0].content.parts[0].text) {
+    if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
       const reply = data.candidates[0].content.parts[0].text;
       return res.status(200).json({ reply });
     } else {
-      return res.status(500).json({ reply: 'No se pudo generar respuesta de la IA.' });
+      console.error("Respuesta inesperada de Google:", JSON.stringify(data));
+      return res.status(200).json({ 
+        reply: 'La IA no pudo procesar la respuesta. Comprueba que tu API Key sea correcta y tenga cuota activa en Google AI Studio.' 
+      });
     }
   } catch (error) {
-    return res.status(500).json({ reply: 'Error de conexión con el servicio de IA.' });
+    console.error("Error en Serverless Function:", error);
+    return res.status(200).json({ reply: 'Error interno al conectar con el servicio de IA.' });
   }
 }
