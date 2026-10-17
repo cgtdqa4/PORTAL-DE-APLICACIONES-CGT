@@ -7,12 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Chart.js para los gráficos de la calculadora de poder adquisitivo -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 :root {
-  /* PALETA OFICIAL CGT (Rojo y Negro) */
   --cgt-red: #cc0000;
   --cgt-red-hover: #e60000;
   --cgt-black: #121212;
@@ -155,7 +153,6 @@ header.portal-header {
   line-height: 1.45;
 }
 
-/* ESTILOS DE LA APLICACIÓN DE PODER ADQUISITIVO CGT */
 .calc-container {
   background-color: var(--cgt-dark-grey);
   border: 1px solid var(--cgt-border);
@@ -338,7 +335,6 @@ header.portal-header {
   height: 260px;
 }
 
-/* CAJA DE ACCESO A AFILIADOS */
 .affiliates-auth-box {
   background-color: var(--cgt-dark-grey);
   border: 1px solid var(--cgt-border);
@@ -440,3 +436,183 @@ header.portal-header {
 }
 
 .btn-logout:hover {
+  background-color: var(--cgt-red);
+  color: #fff;
+  border-color: var(--cgt-red);
+}
+
+footer {
+  margin-top: 40px;
+  padding: 25px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--cgt-border);
+  width: 100%;
+}
+
+footer strong {
+  color: var(--cgt-red);
+}
+</style>
+</head>
+
+<body>
+
+<div id="app-portal">
+  <header class="portal-header">
+    <div class="header-title">
+      <h1><span>CGT</span> Portal de Apps</h1>
+      <p>Plataforma de herramientas sindicales y de cálculo</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERRAMIENTAS LIBRES (ACCESO PÚBLICO) -->
+    <section class="section-block">
+      <h2 class="section-title">Herramientas Libres (Acceso Público)</h2>
+      <div class="apps-grid">
+        <a href="https://cgtdqa4.github.io/BUSCADOR-CONVENIO-COLECTIVO/" target="_blank" class="app-card">
+          <div>
+            <h3>Buscador Convenio Colectivo <span>→</span></h3>
+            <p>Buscador de artículos y condiciones reguladas en el convenio colectivo.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/BUSCADOR-ESTATUTO-TRABAJADORES/" target="_blank" class="app-card">
+          <div>
+            <h3>Buscador Estatuto Trabajadores <span>→</span></h3>
+            <p>Búsqueda directa y consulta de artículos del Estatuto de los Trabajadores.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR-IRPF-CGT/" target="_blank" class="app-card">
+          <div>
+            <h3>Simulador IRPF CGT <span>→</span></h3>
+            <p>Estimación del tipo de retención y ajuste de IRPF sobre los rendimientos del trabajo.</p>
+          </div>
+        </a>
+
+        <!-- TARJETA DE CÁLCULO DE PODER ADQUISITIVO -->
+        <div class="app-card" onclick="togglePoderAdquisitivoApp()">
+          <div>
+            <h3>Pérdida Poder Adquisitivo <span>↓</span></h3>
+            <p>Calculadora del déficit salarial, IPC e incremento del coste de vida (2002-2026).</p>
+          </div>
+        </div>
+
+        <a href="https://cgtdqa4.github.io/GUIA-DE-PERMISOS/" target="_blank" class="app-card">
+          <div>
+            <h3>Guía de Permisos <span>→</span></h3>
+            <p>Consulta rápida y detallada de permisos laborales, licencias y retribuciones.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/GESTOR-DE-FLEXIS/" target="_blank" class="app-card">
+          <div>
+            <h3>Gestor de Flexis <span>→</span></h3>
+            <p>Herramienta para el control, cálculo y seguimiento del saldo de horas flexibles.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR-PRESTACION-FIJO-DISCONTINUO/" target="_blank" class="app-card">
+          <div>
+            <h3>Simulador Prestación Fijo Discontinuo <span>→</span></h3>
+            <p>Cálculo de prestación y desempleo adaptado a períodos de inactividad de fijos discontinuos.</p>
+          </div>
+        </a>
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR--PRESTACION-MATERNIDAD-PATERNIDAD-RIESGO/" target="_blank" class="app-card">
+          <div>
+            <h3>Simulador Prestación Maternidad, Paternidad y Riesgo <span>→</span></h3>
+            <p>Cálculo estimado de la prestación por nacimiento, cuidado del menor o riesgo durante el embarazo.</p>
+          </div>
+        </a>
+
+        <a href="https://calculo-atrasos-reyf.vercel.app" target="_blank" class="app-card">
+          <div>
+            <h3>Cálculo Atrasos REYF <span>→</span></h3>
+            <p>Simulación y cálculo de atrasos salariales y regularizaciones del convenio.</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- MÓDULO INTERACTIVO DE PÉRDIDA DE PODER ADQUISITIVO -->
+      <div id="cgt-poder-app" class="calc-container" style="display: none;">
+        <div class="calc-header">
+          <h2>Calculadora de Pérdida de Poder Adquisitivo CGT</h2>
+          <p>Mide la erosión salarial y el encarecimiento real de la vida de la clase trabajadora entre 2002 y 2026.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Comunidad Autónoma</label>
+            <select id="ccaa">
+              <option value="ES">Nacional (Media de España)</option>
+              <option value="AN">Andalucía</option>
+              <option value="AR">Aragón</option>
+              <option value="AS">Asturias</option>
+              <option value="IB">Balears (Illes)</option>
+              <option value="CN">Canarias</option>
+              <option value="CB">Cantabria</option>
+              <option value="CL">Castilla y León</option>
+              <option value="CM">Castilla-La Mancha</option>
+              <option value="CT">Cataluña</option>
+              <option value="VC">Comunitat Valenciana</option>
+              <option value="EX">Extremadura</option>
+              <option value="GA">Galicia</option>
+              <option value="MD">Madrid</option>
+              <option value="MC">Murcia</option>
+              <option value="NC">Navarra</option>
+              <option value="PV">País Vasco</option>
+              <option value="RI">La Rioja</option>
+              <option value="CE">Ceuta</option>
+              <option value="ML">Melilla</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Año de referencia inicial</label>
+            <select id="yearSelect"></select>
+          </div>
+
+          <div class="form-group">
+            <label>Salario bruto anual en <span id="labelYearOld">2015</span> (€)</label>
+            <input type="number" id="salaryOld" step="any" placeholder="Ej: 24000">
+          </div>
+
+          <div class="form-group">
+            <label>Salario bruto anual en 2026 (€)</label>
+            <input type="number" id="salaryNew" step="any" placeholder="Ej: 27000">
+          </div>
+        </div>
+
+        <div class="slider-box">
+          <div class="slider-header">
+            <span>Selección rápida en barra temporal:</span>
+            <span id="sliderYearBadge" class="slider-badge">2015 vs 2026</span>
+          </div>
+          <input type="range" id="yearSlider" min="2002" max="2025" value="2015" step="1" class="cgt-slider">
+        </div>
+
+        <button class="btn-cgt" onclick="calculatePoderAdquisitivo()">Calcular Pérdida y Déficit Salarial</button>
+
+        <div id="cgt-results" style="display: none;">
+          <div class="results-grid">
+            <div class="res-card">
+              <span>IPC Acumulado</span>
+              <div id="resIpc" style="color: #fff;">+0%</div>
+            </div>
+            <div class="res-card">
+              <span>Poder Adquisitivo</span>
+              <div id="resPoder">0%</div>
+            </div>
+            <div class="res-card">
+              <span>Sueldo Necesario 2026</span>
+              <div id="resSalarioReq" style="color: #fff;">0 €</div>
+            </div>
+          </div>
+
+          <div id="deficitAlert" class="alert-box"></div>
+
+          <div class="chart-wrapper">
