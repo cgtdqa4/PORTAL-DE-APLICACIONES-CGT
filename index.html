@@ -1,916 +1,454 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal de Aplicaciones - CGT DQA4</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Chart.js para los gráficos -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-:root {
-  /* PALETA OFICIAL CGT (Rojo y Negro) */
-  --cgt-red: #cc0000;
-  --cgt-red-hover: #e60000;
-  --cgt-black: #121212;
-  --cgt-dark-grey: #1e1e1e;
-  --cgt-card-bg: #262626;
-  --cgt-border: #3d3d3d;
-  --text-main: #f5f5f5;
-  --text-muted: #a3a3a3;
-  --error-color: #ff6b6b;
-  --radius: 12px;
-  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-}
-
-body {
-  background-color: var(--cgt-black);
-  color: var(--text-main);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 12px;
-}
-
-#app-portal {
-  width: 100%;
-  max-width: 1000px;
-  margin: 10px auto;
-}
-
-header.portal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 16px;
-  border-bottom: 2px solid var(--cgt-red);
-  margin-bottom: 25px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.header-title h1 {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.header-title h1 span {
-  color: var(--cgt-red);
-}
-
-.header-title p {
-  color: var(--text-muted);
-  font-size: 0.88rem;
-}
-
-.section-block {
-  margin-bottom: 35px;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin-bottom: 15px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--cgt-border);
-  color: #ffffff;
-}
-
-.apps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 15px;
-}
-
-.app-card {
-  background-color: var(--cgt-card-bg);
-  border: 1px solid var(--cgt-border);
-  border-radius: var(--radius);
-  padding: 18px;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-.app-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background-color: var(--cgt-red);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.app-card:hover, .app-card:focus {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
-  border-color: #555;
-  outline: none;
-}
-
-.app-card:hover::before, .app-card:focus::before {
-  opacity: 1;
-}
-
-.app-card h3 {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #fff;
-  width: 100%;
-}
-
-.app-card p {
-  color: var(--text-muted);
-  font-size: 0.84rem;
-  line-height: 1.4;
-}
-
-/* ESTILOS Y RESPONSIVE DE LA CALCULADORA PODER ADQUISITIVO */
-.calc-container {
-  background-color: var(--cgt-dark-grey);
-  border: 1px solid var(--cgt-border);
-  border-left: 4px solid var(--cgt-red);
-  border-radius: var(--radius);
-  padding: 18px;
-  margin-top: 20px;
-  box-shadow: var(--shadow);
-  width: 100%;
-}
-
-.calc-header {
-  border-bottom: 1px solid var(--cgt-border);
-  padding-bottom: 12px;
-  margin-bottom: 18px;
-}
-
-.calc-header h2 {
-  font-size: 1.35rem;
-  color: #fff;
-  font-weight: 800;
-}
-
-.calc-header p {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin-top: 4px;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.form-group label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-main);
-}
-
-.form-group select, .form-group input {
-  padding: 10px 12px;
-  background-color: var(--cgt-black);
-  border: 1px solid var(--cgt-border);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 0.9rem;
-  outline: none;
-  width: 100%;
-}
-
-.form-group select:focus, .form-group input:focus {
-  border-color: var(--cgt-red);
-}
-
-.slider-box {
-  background-color: var(--cgt-black);
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid var(--cgt-border);
-  margin-bottom: 18px;
-}
-
-.slider-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.slider-badge {
-  background-color: var(--cgt-red);
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 0.78rem;
-}
-
-.cgt-slider {
-  width: 100%;
-  height: 6px;
-  accent-color: var(--cgt-red);
-  cursor: pointer;
-}
-
-.btn-cgt {
-  width: 100%;
-  padding: 14px;
-  background-color: var(--cgt-red);
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 0.95rem;
-  font-weight: 800;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: background-color 0.2s;
-}
-
-.btn-cgt:hover {
-  background-color: var(--cgt-red-hover);
-}
-
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.res-card {
-  background-color: var(--cgt-black);
-  border: 1px solid var(--cgt-border);
-  border-radius: 8px;
-  padding: 12px;
-}
-
-.res-card span {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  font-weight: 700;
-}
-
-.res-card div {
-  font-size: 1.35rem;
-  font-weight: 800;
-  margin-top: 4px;
-}
-
-.alert-box {
-  padding: 12px 15px;
-  border-radius: 8px;
-  margin-top: 15px;
-  font-size: 0.85rem;
-  line-height: 1.45;
-}
-
-.alert-deficit {
-  background-color: rgba(204, 0, 0, 0.15);
-  border: 1px solid var(--cgt-red);
-  color: #ff8080;
-}
-
-.alert-surplus {
-  background-color: rgba(0, 204, 102, 0.15);
-  border: 1px solid #00cc66;
-  color: #80ffc3;
-}
-
-.expenses-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.expense-card {
-  background-color: var(--cgt-black);
-  border: 1px solid var(--cgt-border);
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 0.82rem;
-}
-
-.chart-wrapper {
-  background-color: var(--cgt-black);
-  border: 1px solid var(--cgt-border);
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 18px;
-  height: 240px;
-  position: relative;
-}
-
-/* CAJA AFILIADOS RESPONSIVE */
-.affiliates-auth-box {
-  background-color: var(--cgt-dark-grey);
-  border: 1px solid var(--cgt-border);
-  border-left: 4px solid var(--cgt-red);
-  padding: 22px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  max-width: 500px;
-  margin: 10px 0;
-  width: 100%;
-}
-
-.affiliates-auth-box h3 {
-  font-size: 1.1rem;
-  color: #fff;
-  margin-bottom: 6px;
-}
-
-.affiliates-auth-box p {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin-bottom: 16px;
-}
-
-.input-group-inline {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.input-group-inline input {
-  flex: 1;
-  min-width: 180px;
-  padding: 10px 14px;
-  background-color: var(--cgt-black);
-  border: 1px solid var(--cgt-border);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 0.9rem;
-  outline: none;
-}
-
-.input-group-inline input:focus {
-  border-color: var(--cgt-red);
-}
-
-.btn-inline {
-  padding: 10px 18px;
-  background-color: var(--cgt-red);
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.btn-inline:hover {
-  background-color: var(--cgt-red-hover);
-}
-
-.error-msg {
-  color: var(--error-color);
-  font-size: 0.82rem;
-  margin-top: 8px;
-  display: none;
-  font-weight: 500;
-}
-
-.logout-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(204, 0, 0, 0.1);
-  border: 1px solid rgba(204, 0, 0, 0.3);
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.logout-bar span {
-  font-size: 0.85rem;
-  color: #fff;
-  font-weight: 600;
-}
-
-.btn-logout {
-  background-color: transparent;
-  border: 1px solid var(--cgt-border);
-  color: var(--text-muted);
-  padding: 5px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.btn-logout:hover {
-  background-color: var(--cgt-red);
-  color: #fff;
-  border-color: var(--cgt-red);
-}
-
-footer {
-  margin-top: 30px;
-  padding: 20px 15px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  border-top: 1px solid var(--cgt-border);
-  width: 100%;
-}
-
-footer strong {
-  color: var(--cgt-red);
-}
-
-@media (min-width: 640px) {
-  body { padding: 20px; }
-  .header-title h1 { font-size: 2rem; }
-  .calc-header h2 { font-size: 1.6rem; }
-}
-</style>
-</head>
-
-<body>
-
-<div id="app-portal">
-  <header class="portal-header">
-    <div class="header-title">
-      <h1><span>CGT</span> Portal de Apps</h1>
-      <p>Plataforma de herramientas sindicales y de cálculo</p>
-    </div>
-  </header>
-
-  <main>
-    <!-- HERRAMIENTAS LIBRES (ACCESO PÚBLICO) -->
-    <section class="section-block">
-      <h2 class="section-title">Herramientas Libres (Acceso Público)</h2>
-      <div class="apps-grid">
-        <a href="https://cgtdqa4.github.io/BUSCADOR-CONVENIO-COLECTIVO/" target="_blank" class="app-card">
-          <div>
-            <h3>Buscador Convenio Colectivo <span>→</span></h3>
-            <p>Buscador de artículos y condiciones reguladas en el convenio colectivo.</p>
-          </div>
-        </a>
-
-        <a href="https://cgtdqa4.github.io/BUSCADOR-ESTATUTO-TRABAJADORES/" target="_blank" class="app-card">
-          <div>
-            <h3>Buscador Estatuto Trabajadores <span>→</span></h3>
-            <p>Búsqueda directa y consulta de artículos del Estatuto de los Trabajadores.</p>
-          </div>
-        </a>
-
-        <a href="https://cgtdqa4.github.io/SIMULADOR-IRPF-CGT/" target="_blank" class="app-card">
-          <div>
-            <h3>Simulador IRPF CGT <span>→</span></h3>
-            <p>Estimación del tipo de retención y ajuste de IRPF sobre los rendimientos del trabajo.</p>
-          </div>
-        </a>
-
-        <!-- APLICACIÓN INTERACTIVA DE PODER ADQUISITIVO -->
-        <button type="button" class="app-card" id="btn-toggle-poder" onclick="togglePoderAdquisitivoApp(event)">
-          <div>
-            <h3>Pérdida Poder Adquisitivo <span id="icon-toggle">↓</span></h3>
-            <p>Calculadora del déficit salarial, IPC e incremento del coste de vida (2002-2026).</p>
-          </div>
-        </button>
-
-        <a href="https://cgtdqa4.github.io/GUIA-DE-PERMISOS/" target="_blank" class="app-card">
-          <div>
-            <h3>Guía de Permisos <span>→</span></h3>
-            <p>Consulta rápida y detallada de permisos laborales, licencias y retribuciones.</p>
-          </div>
-        </a>
-
-        <a href="https://cgtdqa4.github.io/GESTOR-DE-FLEXIS/" target="_blank" class="app-card">
-          <div>
-            <h3>Gestor de Flexis <span>→</span></h3>
-            <p>Herramienta para el control, cálculo y seguimiento del saldo de horas flexibles.</p>
-          </div>
-        </a>
-
-        <a href="https://cgtdqa4.github.io/SIMULADOR-PRESTACION-FIJO-DISCONTINUO/" target="_blank" class="app-card">
-          <div>
-            <h3>Simulador Prestación Fijo Discontinuo <span>→</span></h3>
-            <p>Cálculo de prestación y desempleo adaptado a períodos de inactividad de fijos discontinuos.</p>
-          </div>
-        </a>
-
-        <a href="https://cgtdqa4.github.io/SIMULADOR--PRESTACION-MATERNIDAD-PATERNIDAD-RIESGO/" target="_blank" class="app-card">
-          <div>
-            <h3>Simulador Prestación Maternidad, Paternidad y Riesgo <span>→</span></h3>
-            <p>Cálculo estimado de la prestación por nacimiento, cuidado del menor o riesgo durante el embarazo.</p>
-          </div>
-        </a>
-
-        <a href="https://calculo-atrasos-reyf.vercel.app" target="_blank" class="app-card">
-          <div>
-            <h3>Cálculo Atrasos REYF <span>→</span></h3>
-            <p>Simulación y cálculo de atrasos salariales y regularizaciones del convenio.</p>
-          </div>
-        </a>
-      </div>
-
-      <!-- MÓDULO INTERACTIVO DE PÉRDIDA DE PODER ADQUISITIVO CGT -->
-      <div id="cgt-poder-app" class="calc-container" style="display: none;">
-        <div class="calc-header">
-          <h2>Calculadora de Pérdida de Poder Adquisitivo CGT</h2>
-          <p>Mide la erosión salarial y el encarecimiento real de la vida de la clase trabajadora entre 2002 y 2026.</p>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="ccaa">Comunidad Autónoma</label>
-            <select id="ccaa">
-              <option value="ES">Nacional (Media de España)</option>
-              <option value="AN">Andalucía</option>
-              <option value="AR">Aragón</option>
-              <option value="AS">Asturias</option>
-              <option value="IB">Balears (Illes)</option>
-              <option value="CN">Canarias</option>
-              <option value="CB">Cantabria</option>
-              <option value="CL">Castilla y León</option>
-              <option value="CM">Castilla-La Mancha</option>
-              <option value="CT">Cataluña</option>
-              <option value="VC">Comunitat Valenciana</option>
-              <option value="EX">Extremadura</option>
-              <option value="GA">Galicia</option>
-              <option value="MD">Madrid</option>
-              <option value="MC">Murcia</option>
-              <option value="NC">Navarra</option>
-              <option value="PV">País Vasco</option>
-              <option value="RI">La Rioja</option>
-              <option value="CE">Ceuta</option>
-              <option value="ML">Melilla</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="yearSelect">Año de referencia inicial</label>
-            <select id="yearSelect"></select>
-          </div>
-
-          <div class="form-group">
-            <label for="salaryOld">Salario bruto anual en <span id="labelYearOld">2015</span> (€)</label>
-            <input type="number" id="salaryOld" step="any" placeholder="Ej: 24000">
-          </div>
-
-          <div class="form-group">
-            <label for="salaryNew">Salario bruto anual en 2026 (€)</label>
-            <input type="number" id="salaryNew" step="any" placeholder="Ej: 27000">
-          </div>
-        </div>
-
-        <!-- Slider rápido de línea de tiempo -->
-        <div class="slider-box">
-          <div class="slider-header">
-            <span>Selección rápida en barra temporal:</span>
-            <span id="sliderYearBadge" class="slider-badge">2015 vs 2026</span>
-          </div>
-          <input type="range" id="yearSlider" min="2002" max="2025" value="2015" step="1" class="cgt-slider">
-        </div>
-
-        <button type="button" class="btn-cgt" onclick="calculatePoderAdquisitivo()">Calcular Pérdida y Déficit Salarial</button>
-
-        <!-- Resultados -->
-        <div id="cgt-results" style="display: none;">
-          <div class="results-grid">
-            <div class="res-card">
-              <span>IPC Acumulado</span>
-              <div id="resIpc" style="color: #fff;">+0%</div>
-            </div>
-            <div class="res-card">
-              <span>Poder Adquisitivo</span>
-              <div id="resPoder">0%</div>
-            </div>
-            <div class="res-card">
-              <span>Sueldo Necesario 2026</span>
-              <div id="resSalarioReq" style="color: #fff;">0 €</div>
-            </div>
-          </div>
-
-          <div id="deficitAlert" class="alert-box"></div>
-
-          <!-- Gráfico Responsive -->
-          <div class="chart-wrapper">
-            <canvas id="salaryChart"></canvas>
-          </div>
-
-          <!-- Subíndices de gastos de trabajadores -->
-          <div style="margin-top: 20px;">
-            <h3 style="color: #fff; font-size: 1rem; margin-bottom: 5px;">Subida real en gastos esenciales de la clase trabajadora</h3>
-            <div id="expensesGrid" class="expenses-grid"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- HERRAMIENTAS EXCLUSIVAS AFILIADOS -->
-    <section class="section-block">
-      <h2 class="section-title">Herramientas Exclusivas Afiliados</h2>
-
-      <!-- FORMULARIO DE ACCESO -->
-      <div id="affiliates-login" class="affiliates-auth-box">
-        <h3>🔒 Área Reservada para Afiliados</h3>
-        <p>Introduce la clave sindical para desbloquear las herramientas exclusivas.</p>
-        <form id="login-form">
-          <div class="input-group-inline">
-            <input type="password" id="password" placeholder="Contraseña de acceso" required autocomplete="current-password">
-            <button type="submit" class="btn-inline">Acceder</button>
-          </div>
-          <div id="error-message" class="error-msg">Clave incorrecta. Contacta con la Sección Sindical de CGT.</div>
-        </form>
-      </div>
-
-      <!-- APLICACIONES DESBLOQUEADAS -->
-      <div id="affiliates-content" style="display: none;">
-        <div class="logout-bar">
-          <span>Acceso Afiliado Concedido</span>
-          <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
-        </div>
-
-        <div class="apps-grid">
-          <a href="https://verificador-de-nominas.vercel.app" target="_blank" class="app-card">
-            <div>
-              <h3>Verificador de Nóminas <span>→</span></h3>
-              <p>Herramienta para revisar y comprobar los conceptos, complementos y descuentos en nómina.</p>
-            </div>
-          </a>
-
-          <a href="https://calculora-finiquito-e-indemnizaci.vercel.app" target="_blank" class="app-card">
-            <div>
-              <h3>Calculadora Finiquito e Indemnización <span>→</span></h3>
-              <p>Cálculo exacto de liquidación, finiquito e indemnizaciones por extinción de contrato.</p>
-            </div>
-          </a>
-
-          <a href="https://calculo-salario-diario.vercel.app" target="_blank" class="app-card">
-            <div>
-              <h3>Cálculo Salario Diario <span>→</span></h3>
-              <p>Determinación de la base reguladora y salario regulador diario para distintos cálculos.</p>
-            </div>
-          </a>
-
-          <a href="https://simulador-bajas.vercel.app" target="_blank" class="app-card">
-            <div>
-              <h3>Simulador Bajas <span>→</span></h3>
-              <p>Cálculo del complemento por incapacidad temporal (IT) y prestación por baja médica.</p>
-            </div>
-          </a>
-
-          <a href="https://gestor-simulacion-reduccion-de-jorn.vercel.app" target="_blank" class="app-card">
-            <div>
-              <h3>Gestor Simulación Reducción de Jornada <span>→</span></h3>
-              <p>Simulador para cuantificar el impacto salarial de reducciones de jornada laboral.</p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    Sección Sindical <strong>CGT Amazon DQA4</strong> — Todos los derechos reservados.
-  </footer>
-</div>
-
-<script>
-// AUTENTICACIÓN SINDICAL
-const ACCESS_KEY = "durrutivive1936";
-
-document.getElementById('login-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const inputPass = document.getElementById('password').value;
-  const errorMsg = document.getElementById('error-message');
-
-  if (inputPass === ACCESS_KEY) {
-    sessionStorage.setItem('cgt_authenticated', 'true');
-    unlockAffiliates();
-  } else {
-    errorMsg.style.display = 'block';
-  }
-});
-
-function unlockAffiliates() {
-  document.getElementById('affiliates-login').style.display = 'none';
-  document.getElementById('affiliates-content').style.display = 'block';
-}
-
-function logout() {
-  sessionStorage.removeItem('cgt_authenticated');
-  location.reload();
-}
-
-if (sessionStorage.getItem('cgt_authenticated') === 'true') {
-  unlockAffiliates();
-}
-
-// LÓGICA DE APERTURA ROBUSTA DEL DESPLEGABLE
-function togglePoderAdquisitivoApp(e) {
-  if (e) e.preventDefault();
-  const appContainer = document.getElementById('cgt-poder-app');
-  const iconToggle = document.getElementById('icon-toggle');
-  
-  if (appContainer.style.display === 'none' || appContainer.style.display === '') {
-    appContainer.style.display = 'block';
-    if (iconToggle) iconToggle.textContent = '↑';
-    appContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else {
-    appContainer.style.display = 'none';
-    if (iconToggle) iconToggle.textContent = '↓';
-  }
-}
-
-// SERIE HISTÓRICA DE IPC E DATOS ECOICOP (2002 - 2026)
-const ipcHistory = {
-  2002: 81.5, 2003: 79.0, 2004: 76.5, 2005: 73.8, 2006: 71.3,
-  2007: 68.4, 2008: 65.7, 2009: 66.0, 2010: 64.8, 2011: 62.8,
-  2012: 61.3, 2013: 60.4, 2014: 60.5, 2015: 60.8, 2016: 61.0,
-  2017: 59.8, 2018: 58.8, 2019: 58.4, 2020: 58.7, 2021: 56.9,
-  2022: 52.5, 2023: 50.8, 2024: 49.3, 2025: 48.0, 2026: 46.8
-};
-
-const ccaaFactors = {
-  ES: 1.00, AN: 0.98, AR: 0.99, AS: 0.97, IB: 1.05,
-  CN: 0.96, CB: 0.98, CL: 0.97, CM: 0.96, CT: 1.04,
-  VC: 1.01, EX: 0.95, GA: 0.98, MD: 1.05, MC: 0.97,
-  NC: 1.02, PV: 1.03, RI: 0.97, CE: 0.95, ML: 0.95
-};
-
-const categoryFactors = [
-  { name: 'Cesta de la compra (Alimentos)', icon: '🛒', factor: 1.35, sample: 100 },
-  { name: 'Vivienda y Alquiler', icon: '🏠', factor: 1.45, sample: 600 },
-  { name: 'Suministro Eléctrico (Luz)', icon: '⚡', factor: 1.60, sample: 60 },
-  { name: 'Gas y Calefacción', icon: '🔥', factor: 1.50, sample: 50 },
-  { name: 'Agua y Mantenimiento', icon: '🚰', factor: 1.15, sample: 30 },
-  { name: 'Automóviles Nuevos', icon: '🚗', factor: 1.25, sample: 18000 },
-  { name: 'Automóviles Usados', icon: '🚘', factor: 1.40, sample: 8000 },
-  { name: 'Carburante', icon: '⛽', factor: 1.30, sample: 60 }
-];
-
-let chartInstance = null;
-
-document.addEventListener('DOMContentLoaded', () => {
-  const yearSelect = document.getElementById('yearSelect');
-  const yearSlider = document.getElementById('yearSlider');
-
-  if (yearSelect && yearSlider) {
-    for (let y = 2025; y >= 2002; y--) {
-      const opt = document.createElement('option');
-      opt.value = y;
-      opt.textContent = y;
-      if (y === 2015) opt.selected = true;
-      yearSelect.appendChild(opt);
-    }
-
-    yearSelect.addEventListener('change', (e) => {
-      yearSlider.value = e.target.value;
-      updateYearLabels(e.target.value);
-    });
-
-    yearSlider.addEventListener('input', (e) => {
-      yearSelect.value = e.target.value;
-      updateYearLabels(e.target.value);
-    });
-
-    updateYearLabels(yearSelect.value);
-  }
-});
-
-function updateYearLabels(year) {
-  const lOld = document.getElementById('labelYearOld');
-  const sBadge = document.getElementById('sliderYearBadge');
-  if (lOld) lOld.textContent = year;
-  if (sBadge) sBadge.textContent = `${year} vs 2026`;
-}
-
-function calculatePoderAdquisitivo() {
-  const ccaa = document.getElementById('ccaa').value;
-  const yearOld = parseInt(document.getElementById('yearSelect').value);
-  const salOld = parseFloat(document.getElementById('salaryOld').value) || 0;
-  const salNew = parseFloat(document.getElementById('salaryNew').value) || 0;
-
-  const totalIpcRate = ((ipcHistory[yearOld] / ipcHistory[2026]) - 1) * 100 * (ccaaFactors[ccaa] || 1);
-  const reqSalary = salOld * (1 + (totalIpcRate / 100));
-  const powerLossPct = reqSalary > 0 ? ((salNew - reqSalary) / reqSalary) * 100 : 0;
-  const netEuroDiff = salNew - reqSalary;
-
-  document.getElementById('cgt-results').style.display = 'block';
-  document.getElementById('resIpc').textContent = `+${totalIpcRate.toFixed(1)}%`;
-  document.getElementById('resSalarioReq').textContent = `${formatEuro(reqSalary)} €`;
-
-  const powerElem = document.getElementById('resPoder');
-  const alertElem = document.getElementById('deficitAlert');
-
-  if (powerLossPct >= 0) {
-    powerElem.textContent = `+${powerLossPct.toFixed(1)}%`;
-    powerElem.style.color = '#00cc66';
-    alertElem.className = 'alert-box alert-surplus';
-    alertElem.innerHTML = `<strong>¡Ganancia Adquisitiva!</strong> Tu salario supera en <strong>${formatEuro(Math.abs(netEuroDiff))} €/año</strong> el umbral mínimo para cubrir la inflación en tu comunidad respecto a ${yearOld}.`;
-  } else {
-    powerElem.textContent = `${powerLossPct.toFixed(1)}%`;
-    powerElem.style.color = '#ff4d4d';
-    alertElem.className = 'alert-box alert-deficit';
-    alertElem.innerHTML = `<strong>Déficit Salarial CGT:</strong> Para mantener el poder de compra de ${yearOld}, tu salario debería ser de <strong>${formatEuro(reqSalary)} €</strong>. Tienes una pérdida real de <strong>${formatEuro(Math.abs(netEuroDiff))} €/año</strong>.`;
-  }
-
-  const grid = document.getElementById('expensesGrid');
-  grid.innerHTML = '';
-  categoryFactors.forEach(cat => {
-    const inc = totalIpcRate * cat.factor;
-    const card = document.createElement('div');
-    card.className = 'expense-card';
-    card.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span>${cat.icon} <strong>${cat.name}</strong></span>
-        <span style="color: var(--cgt-red); font-weight: bold;">+${inc.toFixed(1)}%</span>
-      </div>
-      <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 5px;">
-        Gasto previo: ${formatEuro(cat.sample)} € ➔ Estimación 2026: <strong style="color: #fff;">${formatEuro(cat.sample * (1 + inc/100))} €</strong>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-
-  const ctx = document.getElementById('salaryChart').getContext('2d');
-  if (chartInstance) chartInstance.destroy();
-  chartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: [`Sueldo ${yearOld}`, 'Sueldo 2026 Real', 'Sueldo 2026 Requerido'],
-      datasets: [{
-        label: 'Euros (€)',
-        data: [salOld, salNew, reqSalary],
-        backgroundColor: ['#555555', '#cc0000', '#ff4d4d'],
-        borderRadius: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: {
-          ticks: { color: '#a3a3a3', callback: v => v.toLocaleString('es-ES') + ' €' },
-          grid: { color: '#3d3d3d' }
-        },
-        x: { ticks: { color: '#a3a3a3' }, grid: { color: 'transparent' } }
-      }
-    }
-  });
-}
-
-function formatEuro(val) {
-  return val.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-</script>
-
-</body>
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Portal de Aplicaciones - CGT DQA4</title> 
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"> 
+
+  <style> 
+    :root { 
+      /* PALETA OFICIAL CGT (Rojo y Negro) */ 
+      --cgt-red: #cc0000; 
+      --cgt-red-hover: #e60000; 
+      --cgt-black: #121212; 
+      --cgt-dark-grey: #1e1e1e; 
+      --cgt-card-bg: #262626; 
+      --cgt-border: #3d3d3d; 
+      --text-main: #f5f5f5; 
+      --text-muted: #a3a3a3; 
+      --error-color: #ff6b6b; 
+      --radius: 12px; 
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4); 
+    } 
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+    } 
+
+    body { 
+      background-color: var(--cgt-black); 
+      color: var(--text-main); 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: flex-start; 
+      padding: 20px; 
+    } 
+
+    #app-portal { 
+      width: 100%; 
+      max-width: 1000px; 
+      margin: 20px auto; 
+    } 
+
+    header.portal-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding-bottom: 20px; 
+      border-bottom: 2px solid var(--cgt-red); 
+      margin-bottom: 35px; 
+      flex-wrap: wrap; 
+      gap: 15px; 
+    } 
+
+    .header-title h1 { 
+      font-size: 2rem; 
+      font-weight: 800; 
+      color: #fff; 
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+    } 
+
+    .header-title h1 span { 
+      color: var(--cgt-red); 
+    } 
+
+    .header-title p { 
+      color: var(--text-muted); 
+      font-size: 0.95rem; 
+    } 
+
+    .section-block { 
+      margin-bottom: 45px; 
+    } 
+
+    .section-title { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+      font-size: 1.3rem; 
+      font-weight: 700; 
+      margin-bottom: 20px; 
+      padding-bottom: 8px; 
+      border-bottom: 1px solid var(--cgt-border); 
+      color: #ffffff; 
+    } 
+
+    .apps-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+      gap: 20px; 
+    } 
+
+    .app-card { 
+      background-color: var(--cgt-card-bg); 
+      border: 1px solid var(--cgt-border); 
+      border-radius: var(--radius); 
+      padding: 22px; 
+      text-decoration: none; 
+      color: inherit; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; 
+      position: relative; 
+      overflow: hidden; 
+    } 
+
+    .app-card::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 4px; 
+      height: 100%; 
+      background-color: var(--cgt-red); 
+      opacity: 0; 
+      transition: opacity 0.2s; 
+    } 
+
+    .app-card:hover { 
+      transform: translateY(-4px); 
+      box-shadow: var(--shadow); 
+      border-color: #555; 
+    } 
+
+    .app-card:hover::before { 
+      opacity: 1; 
+    } 
+
+    .app-card h3 { 
+      font-size: 1.15rem; 
+      font-weight: 700; 
+      margin-bottom: 10px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      color: #fff; 
+    } 
+
+    .app-card p { 
+      color: var(--text-muted); 
+      font-size: 0.88rem; 
+      line-height: 1.45; 
+    } 
+
+    /* CAJA DE ACCESO A AFILIADOS */ 
+    .affiliates-auth-box { 
+      background-color: var(--cgt-dark-grey); 
+      border: 1px solid var(--cgt-border); 
+      border-left: 4px solid var(--cgt-red); 
+      padding: 30px; 
+      border-radius: var(--radius); 
+      box-shadow: var(--shadow); 
+      max-width: 500px; 
+      margin: 10px 0; 
+    } 
+
+    .affiliates-auth-box h3 { 
+      font-size: 1.2rem; 
+      color: #fff; 
+      margin-bottom: 8px; 
+    } 
+
+    .affiliates-auth-box p { 
+      color: var(--text-muted); 
+      font-size: 0.88rem; 
+      margin-bottom: 20px; 
+    } 
+
+    .input-group-inline { 
+      display: flex; 
+      gap: 10px; 
+      flex-wrap: wrap; 
+    } 
+
+    .input-group-inline input { 
+      flex: 1; 
+      min-width: 200px; 
+      padding: 12px 16px; 
+      background-color: var(--cgt-black); 
+      border: 1px solid var(--cgt-border); 
+      border-radius: 8px; 
+      color: #fff; 
+      font-size: 0.95rem; 
+      outline: none; 
+    } 
+
+    .input-group-inline input:focus { 
+      border-color: var(--cgt-red); 
+    } 
+
+    .btn-inline { 
+      padding: 12px 20px; 
+      background-color: var(--cgt-red); 
+      border: none; 
+      border-radius: 8px; 
+      color: #fff; 
+      font-size: 0.9rem; 
+      font-weight: 700; 
+      cursor: pointer; 
+      transition: background-color 0.2s; 
+      text-transform: uppercase; 
+      letter-spacing: 0.5px; 
+    } 
+
+    .btn-inline:hover { 
+      background-color: var(--cgt-red-hover); 
+    } 
+
+    .error-msg { 
+      color: var(--error-color); 
+      font-size: 0.85rem; 
+      margin-top: 10px; 
+      display: none; 
+      font-weight: 500; 
+    } 
+
+    .logout-bar { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      background-color: rgba(204, 0, 0, 0.1); 
+      border: 1px solid rgba(204, 0, 0, 0.3); 
+      padding: 12px 18px; 
+      border-radius: 8px; 
+      margin-bottom: 25px; 
+    } 
+
+    .logout-bar span { 
+      font-size: 0.9rem; 
+      color: #fff; 
+      font-weight: 600; 
+    } 
+
+    .btn-logout { 
+      background-color: transparent; 
+      border: 1px solid var(--cgt-border); 
+      color: var(--text-muted); 
+      padding: 6px 14px; 
+      border-radius: 6px; 
+      cursor: pointer; 
+      font-size: 0.82rem; 
+      font-weight: 600; 
+      transition: all 0.2s; 
+    } 
+
+    .btn-logout:hover { 
+      background-color: var(--cgt-red); 
+      color: #fff; 
+      border-color: var(--cgt-red); 
+    } 
+
+    footer { 
+      margin-top: 40px; 
+      padding: 25px 20px; 
+      text-align: center; 
+      color: var(--text-muted); 
+      font-size: 0.85rem; 
+      border-top: 1px solid var(--cgt-border); 
+      width: 100%; 
+    } 
+
+    footer strong { 
+      color: var(--cgt-red); 
+    } 
+  </style> 
+</head> 
+
+<body> 
+
+<div id="app-portal"> 
+  <header class="portal-header"> 
+    <div class="header-title"> 
+      <h1><span>CGT</span> Portal de Apps</h1> 
+      <p>Plataforma de herramientas sindicales y de cálculo</p> 
+    </div> 
+  </header> 
+
+  <main> 
+    <!-- HERRAMIENTAS LIBRES (ACCESO PÚBLICO) --> 
+    <section class="section-block"> 
+      <h2 class="section-title">Herramientas Libres (Acceso Público)</h2> 
+      <div class="apps-grid"> 
+        <a href="https://cgtdqa4.github.io/BUSCADOR-CONVENIO-COLECTIVO/" target="_blank" class="app-card"> 
+          <div> 
+            <h3>Buscador Convenio Colectivo <span>→</span></h3> 
+            <p>Buscador de artículos y condiciones reguladas en el convenio colectivo.</p> 
+          </div> 
+        </a> 
+
+        <a href="https://cgtdqa4.github.io/BUSCADOR-ESTATUTO-TRABAJADORES/" target="_blank" class="app-card"> 
+          <div> 
+            <h3>Buscador Estatuto Trabajadores <span>→</span></h3> 
+            <p>Búsqueda directa y consulta de artículos del Estatuto de los Trabajadores.</p> 
+          </div> 
+        </a> 
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR-IRPF-CGT/" target="_blank" class="app-card"> 
+          <div> 
+            <h3>Simulador IRPF CGT <span>→</span></h3> 
+            <p>Estimación del tipo de retención y ajuste de IRPF sobre los rendimientos del trabajo.</p> 
+          </div> 
+        </a> 
+
+        <a href="https://cgtdqa4.github.io/GUIA-DE-PERMISOS/" target="_blank" class="app-card"> 
+          <div> 
+            <h3>Guía de Permisos <span>→</span></h3> 
+            <p>Consulta rápida y detallada de permisos laborales, licencias y retribuciones.</p> 
+          </div> 
+        </a> 
+
+        <a href="https://cgtdqa4.github.io/GESTOR-DE-FLEXIS/" target="_blank" class="app-card"> 
+          <div> 
+            <h3>Gestor de Flexis <span>→</span></h3> 
+            <p>Herramienta para el control, cálculo y seguimiento del saldo de horas flexibles.</p> 
+          </div> 
+        </a> 
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR-PRESTACION-FIJO-DISCONTINUO/" target="_blank" class="app-card"> 
+          <div> 
+            <h3>Simulador Prestación Fijo Discontinuo <span>→</span></h3> 
+            <p>Cálculo de prestación y desempleo adaptado a períodos de inactividad de fijos discontinuos.</p> 
+          </div> 
+        </a> 
+
+        <a href="https://cgtdqa4.github.io/SIMULADOR--PRESTACION-MATERNIDAD-PATERNIDAD-RIESGO/" target="_blank" class="app-card"> 
+          <div> 
+            <h3>Simulador Prestación Maternidad, Paternidad y Riesgo <span>→</span></h3> 
+            <p>Cálculo estimado de la prestación por nacimiento, cuidado del menor o riesgo durante el embarazo.</p> 
+          </div> 
+        </a> 
+
+        <a href="https://calculo-atrasos-reyf.vercel.app" target="_blank" class="app-card"> 
+          <div> 
+            <h3>Cálculo Atrasos REYF <span>→</span></h3> 
+            <p>Simulación y cálculo de atrasos salariales y regularizaciones del convenio.</p> 
+          </div> 
+        </a> 
+      </div> 
+    </section> 
+
+    <!-- HERRAMIENTAS EXCLUSIVAS AFILIADOS --> 
+    <section class="section-block"> 
+      <h2 class="section-title">Herramientas Exclusivas Afiliados</h2> 
+
+      <!-- FORMULARIO DE ACCESO --> 
+      <div id="affiliates-login" class="affiliates-auth-box"> 
+        <h3>🔒 Área Reservada para Afiliados</h3> 
+        <p>Introduce la clave sindical para desbloquear las herramientas exclusivas.</p> 
+        <form id="login-form"> 
+          <div class="input-group-inline"> 
+            <input type="password" id="password" placeholder="Contraseña de acceso" required autocomplete="current-password"> 
+            <button type="submit" class="btn-inline">Acceder</button> 
+          </div> 
+          <div id="error-message" class="error-msg">Clave incorrecta. Contacta con la Sección Sindical de CGT.</div> 
+        </form> 
+      </div> 
+
+      <!-- APLICACIONES DESBLOQUEADAS --> 
+      <div id="affiliates-content" style="display: none;"> 
+        <div class="logout-bar"> 
+          <span>Acceso Afiliado Concedido</span> 
+          <button class="btn-logout" onclick="logout()">Cerrar Sesión</button> 
+        </div> 
+
+        <div class="apps-grid"> 
+          <a href="https://verificador-de-nominas.vercel.app" target="_blank" class="app-card"> 
+            <div> 
+              <h3>Verificador de Nóminas <span>→</span></h3> 
+              <p>Herramienta para revisar y comprobar los conceptos, complementos y descuentos en nómina.</p> 
+            </div> 
+          </a> 
+
+          <a href="https://calculora-finiquito-e-indemnizaci.vercel.app" target="_blank" class="app-card"> 
+            <div> 
+              <h3>Calculadora Finiquito e Indemnización <span>→</span></h3> 
+              <p>Cálculo exacto de liquidación, finiquito e indemnizaciones por extinción de contrato.</p> 
+            </div> 
+          </a> 
+
+          <a href="https://calculo-salario-diario.vercel.app" target="_blank" class="app-card"> 
+            <div> 
+              <h3>Cálculo Salario Hora y Día <span>→</span></h3> 
+              <p>Cálculo de la tarifa por hora, horas extra/complementarias, pluses y retribución diaria.</p> 
+            </div> 
+          </a> 
+
+          <a href="https://simulador-bajas.vercel.app" target="_blank" class="app-card"> 
+            <div> 
+              <h3>Simulador Bajas <span>→</span></h3> 
+              <p>Cálculo del complemento por incapacidad temporal (IT) y prestación por baja médica.</p> 
+            </div> 
+          </a> 
+
+          <a href="https://gestor-simulacion-reduccion-de-jorn.vercel.app" target="_blank" class="app-card"> 
+            <div> 
+              <h3>Gestor Simulación Reducción de Jornada <span>→</span></h3> 
+              <p>Simulador para cuantificar el impacto salarial de reducciones de jornada laboral.</p> 
+            </div> 
+          </a> 
+        </div> 
+      </div> 
+    </section> 
+  </main> 
+
+  <footer> 
+    Sección Sindical <strong>CGT Amazon DQA4</strong> — Todos los derechos reservados. 
+  </footer> 
+</div> 
+
+<script> 
+  // CONTRASEÑA DE ACCESO A LA SECCIÓN DE AFILIADOS 
+  const ACCESS_KEY = "durrutivive1936"; 
+
+  document.getElementById('login-form').addEventListener('submit', function(e) { 
+    e.preventDefault(); 
+    const inputPass = document.getElementById('password').value; 
+    const errorMsg = document.getElementById('error-message'); 
+
+    if (inputPass === ACCESS_KEY) { 
+      sessionStorage.setItem('cgt_authenticated', 'true'); 
+      unlockAffiliates(); 
+    } else { 
+      errorMsg.style.display = 'block'; 
+    } 
+  }); 
+
+  function unlockAffiliates() { 
+    document.getElementById('affiliates-login').style.display = 'none'; 
+    document.getElementById('affiliates-content').style.display = 'block'; 
+  } 
+
+  function logout() { 
+    sessionStorage.removeItem('cgt_authenticated'); 
+    location.reload(); 
+  } 
+
+  // Mantener desbloqueado si ya se autenticó durante la sesión actual 
+  if (sessionStorage.getItem('cgt_authenticated') === 'true') { 
+    unlockAffiliates(); 
+  } 
+</script> 
+
+</body> 
 </html>
